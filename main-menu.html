@@ -24,13 +24,16 @@
             overflow: hidden;
         }
 
-        /* Tampilan Mobile 9:16 */
+        /* Tampilan Mobile 9:16 + Integrasi Peta Latar Belakang Baru */
         .mobile-container {
             width: 100%;
             max-width: 412px;
             height: 100vh;
             max-height: 892px;
-            background: linear-gradient(180deg, #0d1b2a 0%, #1b263b 50%, #0d1b2a 100%);
+            /* Memasang background-menu.png dengan pelindung gradien agar UI atas/bawah tetap kontras */
+            background: linear-gradient(180deg, rgba(11, 19, 37, 0.75) 0%, rgba(13, 27, 42, 0.3) 40%, rgba(11, 19, 37, 0.8) 100%), 
+                        url('background-menu.png') no-repeat center center;
+            background-size: cover;
             position: relative;
             overflow: hidden;
             display: flex;
@@ -54,23 +57,26 @@
             z-index: 10;
         }
 
-        /* Top Profile Dashboard Bar */
+        /* Top Profile Dashboard Bar dengan Blur Efek */
         .top-profile-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-top: 15px;
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(11, 19, 37, 0.75);
             padding: 10px 16px;
             border-radius: 30px;
-            border: 1px solid rgba(212, 163, 89, 0.3);
+            border: 1.5px solid #e5b842;
             width: 100%;
             cursor: pointer;
-            transition: background 0.2s;
+            z-index: 5;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            transition: background 0.2s, transform 0.1s;
         }
 
-        .top-profile-bar:active {
-            background: rgba(212, 163, 89, 0.15);
+        .top-profile-bar:node:active {
+            transform: scale(0.98);
         }
 
         .student-info {
@@ -102,13 +108,13 @@
         }
 
         .meta-text p {
-            color: #d4a359;
+            color: #e5b842;
             font-size: 10px;
             font-weight: bold;
         }
 
         .star-badge {
-            background: rgba(229, 184, 66, 0.15);
+            background: rgba(229, 184, 66, 0.25);
             border: 1px solid #e5b842;
             padding: 4px 12px;
             border-radius: 20px;
@@ -120,16 +126,19 @@
             gap: 4px;
         }
 
-        /* BARU: Widget Status 3 Lentera Harmoni */
+        /* Widget Status 3 Lentera Harmoni */
         .lantern-status-widget {
-            background: rgba(13, 27, 42, 0.5);
-            border: 1px solid rgba(255,255,255,0.05);
+            background: rgba(11, 19, 37, 0.8);
+            border: 1px solid rgba(212, 163, 89, 0.3);
             border-radius: 14px;
             padding: 10px 12px;
             margin-top: 12px;
             display: flex;
             justify-content: space-around;
             align-items: center;
+            z-index: 5;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         }
 
         .lantern-item {
@@ -137,19 +146,19 @@
             flex-direction: column;
             align-items: center;
             gap: 4px;
-            opacity: 0.4;
-            transition: opacity 0.3s;
+            opacity: 0.35;
+            transition: opacity 0.3s, filter 0.3s;
         }
 
         .lantern-item.active {
             opacity: 1;
-            filter: drop-shadow(0 0 6px #e5b842);
+            filter: drop-shadow(0 0 8px #e5b842);
         }
 
         .lantern-icon { font-size: 20px; }
         .lantern-name { color: #f1faee; font-size: 9px; font-weight: bold; letter-spacing: 0.5px; }
 
-        /* Konten Peta Petualangan (Scrollable Node) */
+        /* Konten Peta Petualangan (Scrollable Node dengan transparansi dinamis) */
         .map-zone {
             width: 100%;
             flex: 1;
@@ -159,23 +168,26 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
+            z-index: 5;
         }
 
         .map-zone::-webkit-scrollbar {
             width: 4px;
         }
         .map-zone::-webkit-scrollbar-thumb {
-            background: rgba(212, 163, 89, 0.3);
+            background: rgba(212, 163, 89, 0.5);
             border-radius: 10px;
         }
 
         /* Klaster Wilayah Kategori Tri Hita Karana */
         .thk-cluster {
             width: 100%;
-            background: rgba(13, 27, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(11, 19, 37, 0.75);
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
             border-radius: 16px;
             padding: 16px;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
         }
 
         .cluster-title {
@@ -188,6 +200,7 @@
             border-radius: 6px;
             display: inline-block;
             margin-bottom: 12px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
         }
 
         .bg-parahyangan { background-color: #b71c1c; border: 1px solid #e63946; }
@@ -203,10 +216,12 @@
 
         .level-node {
             width: 100%;
-            background: #1b263b;
-            border: 1.5px solid rgba(212, 163, 89, 0.3);
+            background: rgba(27, 38, 59, 0.85);
+            border: 1.5px solid rgba(212, 163, 89, 0.4);
             border-radius: 12px;
             padding: 14px 16px;
+            display: flex;
+            justify-space: space-between;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -215,7 +230,7 @@
         }
 
         .level-node:active:not(.locked) {
-            transform: scale(0.98);
+            transform: scale(0.97);
             background: #25334f;
         }
 
@@ -228,9 +243,9 @@
         .level-number {
             width: 32px;
             height: 32px;
-            background: rgba(212, 163, 89, 0.15);
-            border: 2px solid #d4a359;
-            color: #d4a359;
+            background: rgba(229, 184, 66, 0.15);
+            border: 2px solid #e5b842;
+            color: #e5b842;
             border-radius: 8px;
             display: flex;
             justify-content: center;
@@ -242,19 +257,20 @@
         .level-details h5 {
             color: #ffffff;
             font-size: 14px;
-            font-weight: 500;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
         }
 
         .level-details p {
-            color: rgba(241, 250, 238, 0.6);
+            color: rgba(241, 250, 238, 0.85);
             font-size: 11px;
             margin-top: 2px;
         }
 
         /* Status Kondisi Level Terkunci */
         .level-node.locked {
-            opacity: 0.5;
-            background: #0d1b2a;
+            opacity: 0.4;
+            background: rgba(13, 27, 42, 0.9);
             border-color: rgba(255,255,255,0.1);
             cursor: not-allowed;
         }
@@ -268,26 +284,29 @@
             width: 100%;
             text-align: center;
             padding-top: 5px;
+            z-index: 5;
         }
 
         .btn-reset {
-            background: none;
+            background: rgba(11, 19, 37, 0.6);
             border: none;
-            color: rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.5);
             font-size: 11px;
             text-decoration: underline;
+            padding: 4px 12px;
+            border-radius: 8px;
             cursor: pointer;
             letter-spacing: 0.5px;
         }
 
-        /* BARU: Modal Pop-up Box Profil */
+        /* Modal Pop-up Box Profil */
         .profile-modal-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(11, 19, 37, 0.85);
+            background: rgba(11, 19, 37, 0.9);
             backdrop-filter: blur(6px);
             z-index: 100;
             display: none;
@@ -299,12 +318,12 @@
         .profile-card {
             width: 100%;
             background: #111a2e;
-            border: 2px solid #d4a359;
+            border: 2px solid #e5b842;
             border-radius: 20px;
             padding: 24px;
             text-align: center;
             position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
             animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
@@ -314,8 +333,8 @@
             right: 16px;
             background: none;
             border: none;
-            color: rgba(255,255,255,0.4);
-            font-size: 20px;
+            color: rgba(255,255,255,0.5);
+            font-size: 24px;
             cursor: pointer;
         }
 
@@ -333,7 +352,7 @@
         }
 
         .profile-card h3 { color: #fff; font-size: 18px; margin-bottom: 4px; }
-        .profile-card p.class-tag { color: #d4a359; font-size: 12px; font-weight: bold; margin-bottom: 20px; }
+        .profile-card p.class-tag { color: #e5b842; font-size: 12px; font-weight: bold; margin-bottom: 20px; }
 
         .stats-container {
             display: grid;
@@ -343,13 +362,13 @@
         }
 
         .stat-box {
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 10px;
             padding: 10px;
         }
         .stat-val { color: #e5b842; font-size: 16px; font-weight: bold; }
-        .stat-lbl { color: rgba(241, 250, 238, 0.5); font-size: 10px; margin-top: 2px; }
+        .stat-lbl { color: rgba(241, 250, 238, 0.6); font-size: 10px; margin-top: 2px; }
 
         .btn-logout {
             width: 100%;
@@ -363,6 +382,7 @@
             cursor: pointer;
             letter-spacing: 0.5px;
             text-transform: uppercase;
+            border: 1px solid #e5b842;
         }
 
         .btn-logout:active { transform: scale(0.98); }
@@ -541,16 +561,18 @@
                 const node = document.getElementById(`node-${i}`);
                 const statusIcon = document.getElementById(`status-${i}`);
 
-                if (i <= currentProgress) {
-                    node.classList.remove("locked");
-                    if (i < currentProgress) {
-                        statusIcon.innerText = "✅";
+                if (node && statusIcon) {
+                    if (i <= currentProgress) {
+                        node.classList.remove("locked");
+                        if (i < currentProgress) {
+                            statusIcon.innerText = "✅";
+                        } else {
+                            statusIcon.innerText = "🏮";
+                        }
                     } else {
-                        statusIcon.innerText = "🏮";
+                        node.classList.add("locked");
+                        statusIcon.innerText = "🔒";
                     }
-                } else {
-                    node.classList.add("locked");
-                    statusIcon.innerText = "🔒";
                 }
             }
 
@@ -575,28 +597,27 @@
                 alert("Selesaikan level sebelumnya terlebih dahulu untuk menyalakan Lentera ini!");
                 return;
             }
-
-            localStorage.setItem("active_level_session", levelNumber);
-            const page = document.getElementById("menuPage");
-            page.classList.add("fade-out-active");
-
+            
+            // Pindah halaman kuis dinamis berdasarkan level yang dipilih
+            const menuPage = document.getElementById("menuPage");
+            menuPage.classList.add("fade-out-active");
             setTimeout(() => {
-                window.location.href = "story-level.html";
+                window.location.href = `game-quiz.html?level=${levelNumber}`;
             }, 400);
         }
 
         function resetGameProgress() {
-            if (confirm("Apakah kamu yakin ingin mengulang seluruh pencapaian level dari awal?")) {
+            if (confirm("Apakah kamu yakin ingin mengulang seluruh petualangan dari awal?")) {
                 localStorage.setItem("progress_level", "1");
+                localStorage.removeItem("game_completed_status");
                 window.location.reload();
             }
         }
 
-        // Fungsi baru untuk keluar dan membersihkan identitas sesi di browser
         function triggerLogOut() {
-            if (confirm("Apakah kamu yakin ingin keluar? Seluruh data nama dan skor pre-test akan dibersihkan dari penyimpanan lokal.")) {
-                localStorage.clear(); // Bersihkan memori localstorage
-                window.location.href = "index.html"; // Lompat kembali ke halaman registrasi awal
+            if (confirm("Keluar dari aplikasi akan menghapus sesi saat ini?")) {
+                localStorage.clear();
+                window.location.href = "index.html"; // Kembali ke splash screen
             }
         }
     </script>
