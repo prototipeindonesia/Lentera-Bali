@@ -24,13 +24,16 @@
             overflow: hidden;
         }
 
-        /* Simulasi Aspek Rasio Layar Smartphone (9:16) */
+        /* Simulasi Aspek Rasio Layar Smartphone (9:16) + Integrasi Background Baru */
         .mobile-container {
             width: 100%;
             max-width: 412px;
             height: 100vh;
             max-height: 892px;
-            background: linear-gradient(180deg, #0d1b2a 0%, #1b263b 50%, #415a77 100%);
+            /* Memasang background-splash.png dengan fallback linear gradient */
+            background: linear-gradient(180deg, rgba(13, 27, 42, 0.4) 0%, rgba(11, 19, 37, 0.7) 100%), 
+                        url('background-splash.png') no-repeat center center;
+            background-size: cover;
             position: relative;
             overflow: hidden;
             display: flex;
@@ -46,13 +49,15 @@
         .decor-top {
             position: absolute;
             top: 0;
+            left: 0;
             width: 100%;
             height: 80px;
             background: linear-gradient(180deg, rgba(212, 163, 89, 0.2) 0%, transparent 100%);
             border-top: 4px solid #d4a359; /* Aksen Emas Bali */
+            z-index: 2;
         }
 
-        /* Konten Logo Instansi & OPSI */
+        /* Konten Logo Instansi & OPSI dengan latar semi-transparan agar terbaca jelas */
         .institution-logos {
             display: flex;
             gap: 20px;
@@ -60,7 +65,12 @@
             opacity: 0;
             animation: fadeIn 1.2s ease-out forwards;
             animation-delay: 0.3s;
-            z-index: 2;
+            z-index: 3;
+            background: rgba(11, 19, 37, 0.6);
+            padding: 8px 16px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
         }
 
         .logo-placeholder {
@@ -84,7 +94,7 @@
             flex-direction: column;
             align-items: center;
             gap: 20px;
-            z-index: 2;
+            z-index: 3;
         }
 
         /* Efek Lentera Bersinar */
@@ -99,7 +109,7 @@
             position: absolute;
             width: 100px;
             height: 100px;
-            background: radial-gradient(circle, rgba(255,215,0,0.6) 0%, rgba(255,140,0,0) 70%);
+            background: radial-gradient(circle, rgba(255,215,0,0.7) 0%, rgba(255,140,0,0) 70%);
             top: 10px;
             left: 10px;
             border-radius: 50%;
@@ -119,6 +129,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
         }
 
         /* Simbol Lentera di dalam Kotak Rotasi */
@@ -128,12 +139,17 @@
             transform: rotate(-45deg);
         }
 
-        /* Tipografi Judul Game */
+        /* Tipografi Judul Game dengan penegasan shadow pelindung kontras */
         .game-title {
             text-align: center;
             opacity: 0;
             animation: fadeIn 1.2s ease-out forwards;
             animation-delay: 0.6s;
+            background: rgba(11, 19, 37, 0.65);
+            padding: 12px 24px;
+            border-radius: 16px;
+            border: 1px solid rgba(212, 163, 89, 0.2);
+            backdrop-filter: blur(4px);
         }
 
         .game-title h1 {
@@ -141,7 +157,7 @@
             color: #e5b842;
             text-transform: uppercase;
             letter-spacing: 2px;
-            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.6), 0 0 10px rgba(229, 184, 66, 0.4);
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.8), 0 0 12px rgba(229, 184, 66, 0.6);
         }
 
         .game-title p {
@@ -150,32 +166,40 @@
             margin-top: 5px;
             letter-spacing: 1px;
             opacity: 0.9;
+            font-weight: 500;
         }
 
         /* Bagian Loading Bar di Bawah */
         .footer-content {
-            width: 80%;
+            width: 85%;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 12px;
-            z-index: 2;
+            z-index: 3;
+            background: rgba(11, 19, 37, 0.7);
+            padding: 16px;
+            border-radius: 16px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .loading-text {
             color: #f1faee;
             font-size: 12px;
             letter-spacing: 1px;
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
             animation: blink 1.5s infinite;
         }
 
         .progress-bar-container {
             width: 100%;
-            height: 8px;
-            background-color: rgba(255, 255, 255, 0.1);
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.15);
             border-radius: 10px;
             overflow: hidden;
-            border: 1px solid rgba(212, 163, 89, 0.3);
+            border: 1px solid rgba(212, 163, 89, 0.4);
         }
 
         .progress-bar {
@@ -183,14 +207,15 @@
             height: 100%;
             background: linear-gradient(90deg, #e63946, #d4a359);
             border-radius: 10px;
-            box-shadow: 0 0 8px #d4a359;
+            box-shadow: 0 0 10px #d4a359;
             transition: width 0.1s linear;
         }
 
         .version-text {
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.5);
             font-size: 10px;
-            margin-top: 10px;
+            margin-top: 4px;
+            font-weight: bold;
         }
 
         /* Animasi Keyframes */
