@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lentera Bali - Lembar Pre-Test</title>
+    <style>
+        /* Reset Dasar & Layout Mobile Frame */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            background-color: #0b1325;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Tampilan Mobile 9:16 */
+        .mobile-container {
+            width: 100%;
+            max-width: 412px;
+            height: 100vh;
+            max-height: 892px;
+            background: linear-gradient(180deg, #0d1b2a 0%, #1b263b 60%, #111a2e 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 30px 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            opacity: 0;
+            animation: fadeInPage 0.4s ease-out forwards;
+        }
+
+        /* Ornamen Garis Atas */
+        .decor-border-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 12px;
+            background: linear-gradient(90deg, #e63946, #d4a359, #e63946);
+        }
+
+        /* Top Bar Info Kuis */
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .progress-text {
+            color: #d4a359;
+            font-size: 14px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* Mode Senyap (Indikator Khusus Pre-Test) */
+        .mode-badge {
+            background: rgba(230, 57, 70, 0.2);
+            border: 1px solid #e63946;
+            color: #e63946;
+            font-size: 10px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        /* Progress Bar Linear */
+        .track-bar-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-top: 12px;
+            overflow: hidden;
+        }
+
+        .track-bar-fill {
+            width: 10%;
+            height: 100%;
+            background: linear-gradient(90deg, #d4a359, #e5b842);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        /* Area Box Pertanyaan */
+        .question-card {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            margin: auto 0;
+            min-height: 160px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .question-text {
+            color: #ffffff;
+            font-size: 17px;
+            line-height: 1.6;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        /* Area Pilihan Jawaban */
+        .options-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .option-button {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(13, 27, 42, 0.7);
+            border: 1.5px solid rgba(212, 163, 89, 0.3);
+            border-radius: 12px;
+            color: #f1faee;
+            font-size: 15px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            outline: none;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Efek Hover/Siswa memilih */
+        .option-button:active {
+            background: rgba(212, 163, 89, 0.2);
+            border-color: #d4a359;
+            transform: scale(0.98);
+        }
+
+        /* Prefiks Abjad (A, B, C, D) */
+        .option-prefix {
+            color: #d4a359;
+            font-weight: bold;
+            margin-right: 12px;
+            background: rgba(212, 163, 89, 0.1);
+            width: 26px;
+            height: 26px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 6px;
+            border: 1px solid rgba(212, 163, 89, 0.3);
+        }
+
+        /* Animasi */
+        @keyframes fadeInPage {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .fade-out-active {
+            transition: opacity 0.4s ease-in-out;
+            opacity: 0 !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container" id="quizPage">
+        <div class="decor-border-top"></div>
+
+        <div>
+            <div class="quiz-header">
+                <div class="progress-text" id="quizIndexLabel">SOAL 1 / 10</div>
+                <div class="mode-badge">Mode Evaluasi</div>
+            </div>
+            <div class="track-bar-container">
+                <div class="track-bar-fill" id="trackBar"></div>
+            </div>
+        </div>
+
+        <div class="question-card">
+            <p class="question-text" id="questionText">Memuat pertanyaan...</p>
+        </div>
+
+        <div class="options-container" id="optionsContainer">
+            </div>
+
+        <div style="text-align: center; color: rgba(255,255,255,0.2); font-size: 10px; letter-spacing: 0.5px;">
+            LENTERA BALI — PRE-TEST DATA INTERN
+        </div>
+    </div>
+
+    <script>
+        // Bank Soal Pre-Test (10 Butir Kosakata Bermuatan Tri Hita Karana & Budaya Bali)
+        const preTestQuestions = [
+            { id: 1, q: "Apakah arti dari kata 'Sembahyang' dalam tingkatan Basa Alus Mider?", a: "Muspa", b: "Mebanten", c: "Maturan", d: "Nunas", r: "a" },
+            { id: 2, q: "Sarana upacara terkecil berbahan janur dan bunga sebagai wujud syukur disebut...", a: "Kwangen", b: "Canang Sari", c: "Daksina", d: "Banten Pejati", r: "b" },
+            { id: 3, q: "Tempat suci atau pura yang berlokasi di wilayah pegunungan disebut pura...", a: "Segara", b: "Prajapati", c: "Pucak", d: "Dalem", r: "c" },
+            { id: 4, q: "Ketika berbicara dengan guru di sekolah, tingkatan Basa Bali yang tepat digunakan adalah...", a: "Basa Andap", b: "Basa Alus Singgih", c: "Basa Kasar", d: "Basa Alus Sor", r: "b" },
+            { id: 5, q: "Kata 'Meme' dalam Basa Andap (biasa), jika diubah ke dalam bentuk Basa Alus menjadi...", a: "Biang", b: "Ibu", c: "Ratu", d: "Seda", r: "a" },
+            { id: 6, q: "Apa arti dari kosakata 'Mebat' yang sering dijumpai saat ada kegiatan gotong royong di desa?", a: "Memasak makanan tradisional/lawar", b: "Membuat anyaman bambu", c: "Menghias tempat upacara", d: "Rapat desa", r: "a" },
+            { id: 7, q: "Sistem organisasi subak di Bali mengatur pembagian air untuk pilar harmoni...", a: "Parahyangan", b: "Pawongan", c: "Palemahan", d: "Tattwa", r: "c" },
+            { id: 8, q: "Kosakata Basa Bali yang berarti kawasan hutan lindung atau hutan suci adalah...", a: "Alas Rasmini", b: "Alas Kekeran", c: "Setra", d: "Teba", r: "b" },
+            { id: 9, q: "Menjaga hubungan harmonis antara sesama manusia merupakan penerapan dari konsep...", a: "Palemahan", b: "Parahyangan", c: "Pawongan", d: "Samsara", r: "c" },
+            { id: 10, q: "Kosakata yang berarti pekarangan rumah bersih di area belakang dalam rumpun Palemahan adalah...", a: "Natah", b: "Teba", c: "Lebuh", d: "Rurung", r: "b" }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let studentAnswers = [];
+
+        function loadQuestion() {
+            const currentQuestion = preTestQuestions[currentQuestionIndex];
+            
+            // Update Text Soal & Index Bar
+            document.getElementById("quizIndexLabel").innerText = `SOAL ${currentQuestionIndex + 1} / ${preTestQuestions.length}`;
+            document.getElementById("questionText").innerText = currentQuestion.q;
+            
+            // Update Progress Tracking Bar Fill
+            const progressPercent = ((currentQuestionIndex + 1) / preTestQuestions.length) * 100;
+            document.getElementById("trackBar").style.width = `${progressPercent}%`;
+
+            // Muat Opsi Jawaban (A, B, C, D)
+            const optionsContainer = document.getElementById("optionsContainer");
+            optionsContainer.innerHTML = ""; // Bersihkan kontainer lama
+
+            const optionsData = [
+                { key: "a", text: currentQuestion.a },
+                { key: "b", text: currentQuestion.b },
+                { key: "c", text: currentQuestion.c },
+                { key: "d", text: currentQuestion.d }
+            ];
+
+            optionsData.forEach((opt, idx) => {
+                const abjad = ["A", "B", "C", "D"];
+                const button = document.createElement("button");
+                button.className = "option-button";
+                button.innerHTML = `<span class="option-prefix">${abjad[idx]}</span> ${opt.text}`;
+                
+                // Set click action event
+                button.onclick = () => handleAnswerSelection(opt.key);
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        function handleAnswerSelection(selectedKey) {
+            const currentQuestion = preTestQuestions[currentQuestionIndex];
+            
+            // Evaluasi jawaban (silent record)
+            if (selectedKey === currentQuestion.r) {
+                score += 10; // Nilai kelipatan 10 jika benar
+            }
+
+            // Simpan log jawaban siswa untuk validasi penelitian lebih lanjut
+            studentAnswers.push({
+                soal_id: currentQuestion.id,
+                jawaban_siswa: selectedKey,
+                status: (selectedKey === currentQuestion.r) ? "Benar" : "Salah"
+            });
+
+            // Lanjut ke soal berikutnya atau selesaikan kuis
+            if (currentQuestionIndex < preTestQuestions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                finishPreTest();
+            }
+        }
+
+        function finishPreTest() {
+            // Amankan penyimpanan hasil pretest ke dalam browser LocalStorage
+            localStorage.setItem("pretest_score", score);
+            localStorage.setItem("pretest_log", JSON.stringify(studentAnswers));
+
+            // Triger efek visual keluar halaman
+            const page = document.getElementById("quizPage");
+            page.classList.add("fade-out-active");
+
+            // Dialihkan secara sistem ke menu utama game (main-menu.html)
+            setTimeout(() => {
+                window.location.href = "main-menu.html";
+            }, 500);
+        }
+
+        // Inisialisasi pemuatan soal pertama saat DOM siap digunakan
+        document.addEventListener("DOMContentLoaded", () => {
+            loadQuestion();
+        });
+    </script>
+</body>
+</html>

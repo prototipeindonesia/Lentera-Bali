@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lentera Bali - Instruksi Pre-Test</title>
+    <style>
+        /* Reset Dasar & Layout Mobile Frame */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            background-color: #0b1325;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Tampilan Mobile 9:16 */
+        .mobile-container {
+            width: 100%;
+            max-width: 412px;
+            height: 100vh;
+            max-height: 892px;
+            background: linear-gradient(180deg, #0d1b2a 0%, #1b263b 60%, #111a2e 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            opacity: 0;
+            animation: fadeInPage 0.5s ease-out forwards;
+        }
+
+        /* Ornamen Bingkai Tradisional Atas */
+        .decor-border-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 12px;
+            background: linear-gradient(90deg, #e63946, #d4a359, #e63946);
+        }
+
+        /* Header Informasi */
+        .header-section {
+            text-align: center;
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .header-section h3 {
+            color: #d4a359;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        /* Bagian Karakter & Balon Dialog (Pusat Layar) */
+        .character-zone {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: auto 0;
+            gap: 20px;
+        }
+
+        /* Balon Teks Komik/Game */
+        .dialog-bubble {
+            width: 100%;
+            background: #ffffff;
+            border: 3px solid #d4a359;
+            border-radius: 16px;
+            padding: 20px;
+            position: relative;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            min-height: 120px;
+        }
+
+        /* Segitiga Petunjuk Balon Dialog di Bawah */
+        .dialog-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 15px 15px 0;
+            border-style: solid;
+            border-color: #ffffff transparent;
+            display: block;
+            width: 0;
+        }
+
+        .dialog-bubble::before {
+            content: '';
+            position: absolute;
+            bottom: -19px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 16px 16px 0;
+            border-style: solid;
+            border-color: #d4a359 transparent;
+            display: block;
+            width: 0;
+        }
+
+        .dialog-text {
+            color: #1b263b;
+            font-size: 15px;
+            line-height: 1.5;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        /* Avatar Maskot Karakter (Menggunakan CSS Art Elemen) */
+        .character-avatar {
+            width: 110px;
+            height: 110px;
+            background-color: #e5b842; /* Ikat Kepala / Udeng Emas */
+            border: 3px solid #f1faee;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+            position: relative;
+            animation: floatChar 3s ease-in-out infinite;
+        }
+
+        /* Emoji representasi anak laki-laki Bali berbaju adat */
+        .character-avatar::before {
+            content: "👦🏻"; 
+            font-size: 65px;
+            margin-top: -5px;
+        }
+
+        /* Label Nama Karakter di bawah Avatar */
+        .character-name {
+            background: #e63946;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 4px 14px;
+            border-radius: 20px;
+            border: 1.5px solid #d4a359;
+            margin-top: -10px;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        /* Box Aturan Pengisian Kuis */
+        .rules-card {
+            width: 100%;
+            background: rgba(13, 27, 42, 0.6);
+            border: 1px dashed rgba(212, 163, 89, 0.4);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 25px;
+        }
+
+        .rules-card ul {
+            list-style-type: none;
+        }
+
+        .rules-card li {
+            color: #f1faee;
+            font-size: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0.9;
+        }
+
+        .rules-card li:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Tombol Navigasi Lanjut */
+        .btn-action {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%); /* Hijau Sukses */
+            border: 2px solid #d4a359;
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+            transition: transform 0.1s ease;
+        }
+
+        .btn-action:active {
+            transform: scale(0.98);
+        }
+
+        /* Animasi Keyframes */
+        @keyframes fadeInPage {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes floatChar {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .fade-out-active {
+            transition: opacity 0.4s ease-in-out;
+            opacity: 0 !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container" id="instructionPage">
+        <div class="decor-border-top"></div>
+
+        <div class="header-section">
+            <h3 id="welcomeTitle">Tahap Evaluasi</h3>
+        </div>
+
+        <div class="character-zone">
+            <div class="dialog-bubble">
+                <p class="dialog-text" id="typedText"></p>
+            </div>
+            
+            <div class="character-avatar"></div>
+            <div class="character-name">AGUS</div>
+        </div>
+
+        <div class="rules-card">
+            <ul>
+                <li>📝 Terdiri dari 10 soal pilihan ganda seputar bahasa Bali.</li>
+                <li>🤫 Hasil jawaban benar/salah tidak ditampilkan saat kuis berjalan.</li>
+                <li>🚀 Kerjakan sebaik mungkin sesuai kemampuan aslimu ya!</li>
+            </ul>
+        </div>
+
+        <button class="btn-action" onclick="startPreTest()">Mulai Evaluasi</button>
+    </div>
+
+    <script>
+        // Mengambil data nama siswa dari LocalStorage untuk personalisasi sapaan game
+        const namaSiswa = localStorage.getItem("siswa_nama") || "Teman Petualang";
+        
+        // Pesan teks yang akan diketik otomatis oleh sistem script
+        const fullMessage = `Halo, ${namaSiswa}! Sebelum kita menyalakan Lentera Harmoni Pulau Bali, yuk ikuti uji kemampuan awal (Pre-Test) ini terlebih dahulu.`;
+        
+        let index = 0;
+        const speed = 40; // Kecepatan efek ketikan dalam milidetik
+
+        function typeWriter() {
+            if (index < fullMessage.length) {
+                document.getElementById("typedText").innerHTML += fullMessage.charAt(index);
+                index++;
+                setTimeout(typeWriter, speed);
+            }
+        }
+
+        // Memulai efek animasi ketikan saat halaman selesai dimuat sempurna
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("welcomeTitle").innerText = "Pre-Test Awal";
+            typeWriter();
+        });
+
+        function startPreTest() {
+            const page = document.getElementById("instructionPage");
+            page.classList.add("fade-out-active");
+
+            // Mengarahkan siswa langsung menuju halaman antarmuka lembar kuis pretest
+            setTimeout(() => {
+                window.location.href = "quiz-pretest.html";
+            }, 400);
+        }
+    </script>
+</body>
+</html>

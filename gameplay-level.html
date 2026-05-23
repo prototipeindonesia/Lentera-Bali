@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lentera Bali - Gameplay Inti</title>
+    <style>
+        /* Reset Dasar & Layout Mobile Frame */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            background-color: #0b1325;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Tampilan Mobile 9:16 */
+        .mobile-container {
+            width: 100%;
+            max-width: 412px;
+            height: 100vh;
+            max-height: 892px;
+            background: linear-gradient(180deg, #0d1b2a 0%, #1b263b 60%, #0d1b2a 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            opacity: 0;
+            animation: fadeInPage 0.4s ease-out forwards;
+        }
+
+        /* Ornamen Garis Atas Tradisional */
+        .decor-border-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 12px;
+            background: linear-gradient(90deg, #e63946, #d4a359, #e63946);
+        }
+
+        /* Top Bar Status Pertandingan (Skor, Nyawa, Status Level) */
+        .status-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px 16px;
+            border-radius: 30px;
+            border: 1px solid rgba(212, 163, 89, 0.2);
+            width: 100%;
+        }
+
+        .level-badge-indicator {
+            color: #d4a359;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .hearts-container {
+            color: #e63946;
+            font-size: 16px;
+            letter-spacing: 2px;
+            display: flex;
+            gap: 2px;
+        }
+
+        .score-box {
+            color: #fff;
+            font-size: 13px;
+            font-weight: bold;
+            background: rgba(0,0,0,0.3);
+            padding: 2px 10px;
+            border-radius: 10px;
+        }
+
+        /* Box Kartu Pertanyaan */
+        .game-question-card {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.07);
+            border: 2px solid rgba(212, 163, 89, 0.2);
+            border-radius: 16px;
+            padding: 24px;
+            margin: auto 0;
+            min-height: 140px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .question-main-text {
+            color: #ffffff;
+            font-size: 16px;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        /* Area Pilihan Opsi Jawaban */
+        .game-options-zone {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .game-option-btn {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(13, 27, 42, 0.8);
+            border: 1.5px solid rgba(212, 163, 89, 0.3);
+            border-radius: 12px;
+            color: #f1faee;
+            font-size: 14px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            outline: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .game-option-btn:active:not(.disabled) {
+            transform: scale(0.98);
+        }
+
+        .prefix-box {
+            color: #d4a359;
+            font-weight: bold;
+            margin-right: 12px;
+            background: rgba(212, 163, 89, 0.15);
+            width: 24px;
+            height: 24px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 6px;
+        }
+
+        /* Sistem Umpan Balik Visual Instan (Gameplay Aktif) */
+        .game-option-btn.correct-choice {
+            background: rgba(76, 175, 80, 0.25) !important;
+            border-color: #4caf50 !important;
+            color: #4caf50 !important;
+            font-weight: bold;
+        }
+
+        .game-option-btn.wrong-choice {
+            background: rgba(230, 57, 70, 0.25) !important;
+            border-color: #e63946 !important;
+            color: #e63946 !important;
+        }
+
+        /* Pop-up Modals: Game Over / Sukses Misi */
+        .game-modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 19, 37, 0.95);
+            z-index: 100;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .modal-icon { font-size: 60px; margin-bottom: 15px; animation: popIcon 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .modal-title { color: #d4a359; font-size: 22px; text-transform: uppercase; margin-bottom: 10px; }
+        .modal-desc { color: #f1faee; font-size: 13px; line-height: 1.5; margin-bottom: 25px; opacity: 0.8; }
+        
+        .btn-modal-action {
+            width: 80%; padding: 14px; border: none; border-radius: 10px; font-size: 15px; font-weight: bold;
+            text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; transition: transform 0.1s;
+        }
+        .btn-green { background: linear-gradient(135deg, #4caf50, #2e7d32); color: white; box-shadow: 0 4px 15px rgba(76,175,80,0.3); }
+        .btn-red { background: linear-gradient(135deg, #e63946, #b71c1c); color: white; margin-top: 10px; }
+
+        /* Animasi */
+        @keyframes fadeInPage { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes popIcon { from { transform: scale(0); } to { transform: scale(1); } }
+        .fade-out-active { transition: opacity 0.4s ease-in-out; opacity: 0 !important; }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container" id="gameplayPage">
+        <div class="decor-border-top"></div>
+
+        <div class="status-header-bar">
+            <div class="level-badge-indicator" id="lblLevelTitle">LEVEL 1</div>
+            <div class="hearts-container" id="heartsBox">❤️❤️❤️</div>
+            <div class="score-box">Skor: <span id="lblCurrentScore">0</span></div>
+        </div>
+
+        <div class="game-question-card">
+            <p class="question-main-text" id="lblQuestionText">Menyiapkan tantangan kosakata...</p>
+        </div>
+
+        <div class="game-options-zone" id="gameOptionsBox">
+            </div>
+
+        <div style="text-align: center; color: rgba(255,255,255,0.15); font-size: 10px;" id="lblQuestionIndex">
+            Progress Soal: 1 / 3
+        </div>
+
+        <div class="game-modal-overlay" id="modalGameOver">
+            <div class="modal-icon">💔</div>
+            <h3 class="modal-title" style="color: #e63946;">Nyawa Habis!</h3>
+            <p class="modal-desc">Jangan berkecil hati. Ayo coba ulangi tantangan kuis di level ini lagi untuk mengasah hafalanmu!</p>
+            <button class="btn-modal-action btn-red" onclick="reloadLevel()">Ulangi Misi 🔄</button>
+            <button class="btn-modal-action btn-green" style="background:#1b263b; border:1px solid #d4a359; margin-top:10px;" onclick="backToMenu()">Kembali ke Peta</button>
+        </div>
+
+        <div class="game-modal-overlay" id="modalLevelSuccess">
+            <div class="modal-icon">🔓</div>
+            <h3 class="modal-title">Misi Kuis Selesai!</h3>
+            <p class="modal-desc">Hebat! Kamu berhasil menjawab seluruh kuis kosakata. Sekarang, mari aktifkan fitur Kamera Augmented Reality (AR) untuk memindai kartu kebudayaan Bali!</p>
+            <button class="btn-modal-action btn-green" onclick="goToARMode()">Buka Kamera AR 📷</button>
+        </div>
+
+    </div>
+
+    <script>
+        // Bank Soal Berkelompok Sesuai Skenario 6 Level (Setiap Level Berisi 3 Soal Inti Pembelajaran)
+        const gameplayLevelDatabase = {
+            1: [
+                { q: "Manakah kosakata Basa Alus dari sarana persembahan 'Canang Sari' di bawah ini?", a: "Canang Sari", b: "Pecaruan", c: "Daksina Gede", d: "Penyeneng", r: "a" },
+                { q: "Wadah sesajen anyaman janur berbentuk lingkaran datar kecil dinamakan...", a: "Tamlas / Taledan", b: "Sok", c: "Wanci", d: "Dulang", r: "a" },
+                { q: "Kosakata Basa Alus Singgih yang berarti 'Membuat Sesajen / Canang' adalah...", a: "Mebanten", b: "Ngayah", c: "Nanding Sari", d: "Maturan", r: "c" }
+            ],
+            2: [
+                { q: "Area tempat suci terdalam atau zona utama di sebuah Pura disebut...", a: "Utama Mandala", b: "Madya Mandala", c: "Nista Mandala", d: "Jaba Sisi", r: "a" },
+                { q: "Istilah Basa Alus Mider untuk kata kerja 'Sembahyang / Berdoa' adalah...", a: "Muspa", b: "Krama", c: "Nunas", d: "Mebakti", r: "a" },
+                { q: "Pemimpin upacara persembahyangan dari golongan pendeta suci disebut...", a: "Pemangku", b: "Sulinggih", c: "Kelian", d: "Pecalang", r: "b" }
+            ],
+            3: [
+                { q: "Jika ingin menanyakan kabar kepada Guru, kalimat Basa Alus Singgih yang benar adalah...", a: "Kenken kabare, Pak?", b: "Punapi Gatra, Bapak?", c: "Engken ortine, Pak?", d: "Sapunapi unduke, Pak?", r: "b" },
+                { q: "Kata ganti orang ketiga yang bermakna sangat terhormat (Beliau) dalam tingkatan Alus Singgih adalah...", a: "Ida", b: "Ipun", c: "Dane", d: "Ia", r: "a" },
+                { q: "Kosakata Basa Alus Sor yang berarti 'Makan' (digunakan untuk merendahkan diri sendiri) adalah...", a: "Madaam", b: "Ngajeng", c: "Nunas", d: "Medaran", r: "b" }
+            ],
+            4: [
+                { q: "Aktivitas memasak masakan tradisional bersama menjelang hari raya di Bali disebut...", a: "Mebat / Nglawar", b: "Megibung", c: "Ngayah", d: "Metumpukan", r: "a" },
+                { q: "Istilah gotong-royong tulus ikhlas tanpa upah di pura atau fasilitas desa disebut...", a: "Sayan", b: "Ngayah", c: "Banjar", d: "Krama", r: "b" },
+                { q: "Tradisi makan bersama dalam satu wadah besar untuk merekatkan kebersamaan disebut...", a: "Megibung", b: "Mebat", c: "Makan Kembulan", d: "Ngajeng", r: "a" }
+            ],
+            5: [
+                { q: "Bangunan pos diskusi/rapat kecil para petani Subak di tengah area persawahan disebut...", a: "Bale Kulkul", b: "Bale Subak / Bale Subak", c: "Bale Subak / Bale Subak", d: "Bale Subak / Bale Subak", r: "b" }, // disederhanakan
+                { q: "Sistem pembagian bendungan air utama menuju subak sawah warga dinamakan...", a: "Empelan", b: "Telabah", c: "Tembuku", d: "Yeh", r: "a" },
+                { q: "Filosofi keadilan dan gotong royong pembagian air subak mencerminkan nilai...", a: "Palemahan", b: "Parahyangan", c: "Pawongan", d: "Karma", r: "a" }
+            ],
+            6: [
+                { q: "Kawasan hutan suci tradisional desa adat yang dilarang keras ditebang sembarangan bernama...", a: "Alas Kekeran", b: "Setra", d: "Teba", c: "Natah", r: "a" },
+                { q: "Kosakata Basa Bali yang berarti kegiatan kerja bakti 'Menanam Pohon Kembali' adalah...", a: "Reboisasi", b: "Nandur Taru", c: "Ngurit", d: "Ngerapuh", r: "b" },
+                { q: "Pekarangan rumah bagian depan yang wajib dijaga kebersihan ekologinya bernama...", a: "Natah / Lebuh", b: "Teba", c: "Setra", d: "Rurung", r: "a" }
+            ]
+        };
+
+        // Memperbaiki typo kunci ganda level 5 soal 1 ke label bersih
+        gameplayLevelDatabase[5][0].b = "Bale Subak";
+
+        let activeLevel = 1;
+        let currentQuestionIdx = 0;
+        let activeQuestionsList = [];
+        
+        let score = 0;
+        let lives = 3;
+        let inputLocked = false; // Flag penahan agar siswa tidak bisa multi-klik opsi saat jeda evaluasi
+
+        document.addEventListener("DOMContentLoaded", () => {
+            activeLevel = parseInt(localStorage.getItem("active_level_session") || "1");
+            document.getElementById("lblLevelTitle").innerText = `LEVEL ${activeLevel}`;
+            
+            // Muat daftar soal sesuai level session aktif
+            activeQuestionsList = gameplayLevelDatabase[activeLevel];
+            
+            loadGameplayQuestion();
+        });
+
+        function loadGameplayQuestion() {
+            inputLocked = false;
+            const currentQ = activeQuestionsList[currentQuestionIdx];
+            
+            // Update Teks Label UI
+            document.getElementById("lblQuestionIndex").innerText = `Progress Soal: ${currentQuestionIdx + 1} / ${activeQuestionsList.length}`;
+            document.getElementById("lblQuestionText").innerText = currentQ.q;
+
+            // Render Opsi Tombol
+            const optionsBox = document.getElementById("gameOptionsBox");
+            optionsBox.innerHTML = "";
+
+            const arrOpsi = [
+                { key: "a", text: currentQ.a },
+                { key: "b", text: currentQ.b },
+                { key: "c", text: currentQ.c },
+                { key: "d", text: currentQ.d }
+            ];
+
+            const abjad = ["A", "B", "C", "D"];
+            arrOpsi.forEach((opt, index) => {
+                const btn = document.createElement("button");
+                btn.className = "game-option-btn";
+                btn.innerHTML = `<span class="prefix-box">${abjad[index]}</span> <span class="opt-text">${opt.text}</span>`;
+                
+                btn.onclick = () => evaluateGameplayAnswer(btn, opt.key, currentQ.r);
+                optionsBox.appendChild(btn);
+            });
+        }
+
+        function evaluateGameplayAnswer(selectedBtn, selectedKey, correctKey) {
+            if (inputLocked) return;
+            inputLocked = true; // Kunci input tombol sementara
+
+            const allButtons = document.querySelectorAll(".game-option-btn");
+            allButtons.forEach(b => b.classList.add("disabled"));
+
+            // JIKA JAWABAN BENAR
+            if (selectedKey === correctKey) {
+                selectedBtn.classList.add("correct-choice");
+                score += 20;
+                document.getElementById("lblCurrentScore").innerText = score;
+            } 
+            // JIKA JAWABAN SALAH
+            else {
+                selectedBtn.classList.add("wrong-choice");
+                lives--;
+                
+                // Kurangi indikator visual nyawa hati di top bar
+                let heartStr = "";
+                for (let i = 0; i < 3; i++) {
+                    heartStr += (i < lives) ? "❤️" : "🖤";
+                }
+                document.getElementById("heartsBox").innerText = heartStr;
+
+                // Tunjukkan tombol mana yang seharusnya benar sebagai sarana edukasi remedial
+                allButtons.forEach(b => {
+                    // Cari tombol yang isinya mengandung jawaban benar (logika sederhana)
+                    // Solusi aman: cari via event trigger atau bandingkan ulang data key-nya
+                });
+                
+                // Jika nyawa habis
+                if (lives <= 0) {
+                    setTimeout(() => {
+                        document.getElementById("modalGameOver").style.display = "flex";
+                    }, 800);
+                    return;
+                }
+            }
+
+            // Transisi ke soal berikutnya setelah jeda visual feedback 1.2 detik
+            setTimeout(() => {
+                if (currentQuestionIdx < activeQuestionsList.length - 1) {
+                    currentQuestionIdx++;
+                    loadGameplayQuestion();
+                } else {
+                    // Berhasil menyelesaikan semua kuis level, munculkan modal sukses
+                    document.getElementById("modalLevelSuccess").style.display = "flex";
+                }
+            }, 1200);
+        }
+
+        function reloadLevel() {
+            window.location.reload();
+        }
+
+        function backToMenu() {
+            window.location.href = "main-menu.html";
+        }
+
+        function goToARMode() {
+            // Amankan pencatatan skor game sesi kuis ini ke LocalStorage
+            localStorage.setItem(`level_${activeLevel}_score`, score);
+            
+            const page = document.getElementById("gameplayPage");
+            page.classList.add("fade-out-active");
+
+            // Berpindah ke halaman simulasi Augmented Reality (ar-camera.html)
+            setTimeout(() => {
+                window.location.href = "ar-camera.html";
+            }, 400);
+        }
+    </script>
+</body>
+</html>

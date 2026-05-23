@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lentera Bali - Menu Utama</title>
+    <style>
+        /* Reset Dasar & Layout Mobile Frame */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            background-color: #0b1325;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Tampilan Mobile 9:16 */
+        .mobile-container {
+            width: 100%;
+            max-width: 412px;
+            height: 100vh;
+            max-height: 892px;
+            background: linear-gradient(180deg, #0d1b2a 0%, #1b263b 50%, #0d1b2a 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            opacity: 0;
+            animation: fadeInPage 0.4s ease-out forwards;
+        }
+
+        /* Ornamen Garis Atas Tradisional */
+        .decor-border-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 12px;
+            background: linear-gradient(90deg, #e63946, #d4a359, #e63946);
+        }
+
+        /* Top Profile Dashboard Bar */
+        .top-profile-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 10px 16px;
+            border-radius: 30px;
+            border: 1px solid rgba(212, 163, 89, 0.2);
+            width: 100%;
+        }
+
+        .student-info {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .avatar-mini {
+            font-size: 20px;
+            background: #d4a359;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            border: 1.5px solid #fff;
+        }
+
+        .meta-text h4 {
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            max-width: 140px;
+            white-width: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .meta-text p {
+            color: #d4a359;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .star-badge {
+            background: rgba(229, 184, 66, 0.15);
+            border: 1px solid #e5b842;
+            padding: 4px 12px;
+            border-radius: 20px;
+            color: #e5b842;
+            font-size: 13px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Konten Peta Petualangan (Scrollable Node) */
+        .map-zone {
+            width: 100%;
+            height: 65vh;
+            margin: 20px 0;
+            overflow-y: auto;
+            padding-right: 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Menyembunyikan scrollbar default bawaan browser */
+        .map-zone::-webkit-scrollbar {
+            width: 4px;
+        }
+        .map-zone::-webkit-scrollbar-thumb {
+            background: rgba(212, 163, 89, 0.3);
+            border-radius: 10px;
+        }
+
+        /* Klaster Wilayah Kategori Tri Hita Karana */
+        .thk-cluster {
+            width: 100%;
+            background: rgba(13, 27, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 16px;
+        }
+
+        .cluster-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: #fff;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+
+        .bg-parahyangan { background-color: #b71c1c; border: 1px solid #e63946; }
+        .bg-pawongan { background-color: #0d47a1; border: 1px solid #2196f3; }
+        .bg-palemahan { background-color: #1b5e20; border: 1px solid #4caf50; }
+
+        /* Node Jalur Grid Level */
+        .level-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .level-node {
+            width: 100%;
+            background: #1b263b;
+            border: 1.5px solid rgba(212, 163, 89, 0.3);
+            border-radius: 12px;
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .level-node:active:not(.locked) {
+            transform: scale(0.98);
+            background: #25334f;
+        }
+
+        .level-left-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .level-number {
+            width: 32px;
+            height: 32px;
+            background: rgba(212, 163, 89, 0.15);
+            border: 2px solid #d4a359;
+            color: #d4a359;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .level-details h5 {
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .level-details p {
+            color: rgba(241, 250, 238, 0.6);
+            font-size: 11px;
+            margin-top: 2px;
+        }
+
+        /* Status Kondisi Level Terkunci */
+        .level-node.locked {
+            opacity: 0.5;
+            background: #0d1b2a;
+            border-color: rgba(255,255,255,0.1);
+            cursor: not-allowed;
+        }
+
+        .level-status-icon {
+            font-size: 16px;
+        }
+
+        /* Tombol Footer Reset / Keluar */
+        .bottom-action-bar {
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn-reset {
+            background: none;
+            border: none;
+            color: rgba(230, 57, 70, 0.6);
+            font-size: 11px;
+            text-decoration: underline;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+        }
+
+        /* Animasi */
+        @keyframes fadeInPage {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .fade-out-active {
+            transition: opacity 0.4s ease-in-out;
+            opacity: 0 !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container" id="menuPage">
+        <div class="decor-border-top"></div>
+
+        <div class="top-profile-bar">
+            <div class="student-info">
+                <div class="avatar-mini">👦🏻</div>
+                <div class="meta-text">
+                    <h4 id="lblNama">Memuat...</h4>
+                    <p id="lblKelas">Kelas --</p>
+                </div>
+            </div>
+            <div class="star-badge">
+                <span>⭐</span> <span id="lblTotalBintang">0</span>
+            </div>
+        </div>
+
+        <div class="map-zone">
+            
+            <div class="thk-cluster">
+                <span class="cluster-title bg-parahyangan">🛕 Parahyangan</span>
+                <div class="level-grid">
+                    <div class="level-node" id="node-1" onclick="launchLevel(1)">
+                        <div class="level-left-info">
+                            <div class="level-number">1</div>
+                            <div class="level-details">
+                                <h5>Sarana Upacara</h5>
+                                <p>Mengenal kosakata sesajen Bali</p>
+                            </div>
+                        </div>
+                        <div class="level-status-icon" id="status-1">🏮</div>
+                    </div>
+                    <div class="level-node" id="node-2" onclick="launchLevel(2)">
+                        <div class="level-left-info">
+                            <div class="level-number">2</div>
+                            <div class="level-details">
+                                <h5>Istilah Spiritual</h5>
+                                <p>Kosakata pura & aktivitas doa</p>
+                            </div>
+                        </div>
+                        <div class="level-status-icon" id="status-2">🏮</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="thk-cluster">
+                <span class="cluster-title bg-pawongan">👥 Pawongan</span>
+                <div class="level-grid">
+                    <div class="level-node locked" id="node-3" onclick="launchLevel(3)">
+                        <div class="level-left-info">
+                            <div class="level-number">3</div>
+                            <div class="level-details">
+                                <h5>Etika Basa Alus</h5>
+                                <p>Sopan santun bahasa daerah</p>
+                            </div>
+                        </div>
+                        <div class="level-status-icon" id="status-3">🔒</div>
+                    </div>
+                    <div class="level-node locked" id="node-4" onclick="launchLevel(4)">
+                        <div class="level-left-info">
+                            <div class="level-number">4</div>
+                            <div class="level-details">
+                                <h5>Percakapan Sosial</h5>
+                                <p>Interaksi gotong royong warga</p>
+                            </div>
+                        </div>
+                        <div class="level-status-icon" id="status-4">🔒</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="thk-cluster">
+                <span class="cluster-title bg-palemahan">🍃 Palemahan</span>
+                <div class="level-grid">
+                    <div class="level-node locked" id="node-5" onclick="launchLevel(5)">
+                        <div class="level-left-info">
+                            <div class="level-number">5</div>
+                            <div class="level-details">
+                                <h5>Sistem Subak</h5>
+                                <p>Kosakata pertanian air Bali</p>
+                            </div>
+                        </div>
+                        <div class="level-status-icon" id="status-5">🔒</div>
+                    </div>
+                    <div class="level-node locked" id="node-6" onclick="launchLevel(6)">
+                        <div class="level-left-info">
+                            <div class="level-number">6</div>
+                            <div class="level-details">
+                                <h5>Pelestarian Alam</h5>
+                                <p>Kosakata pelestarian lingkungan</p>
+                            </div>
+                        </div>
+                        <div class="level-status-icon" id="status-6">🔒</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="bottom-action-bar">
+            <button class="btn-reset" onclick="resetGameProgress()">Reset Progress Belajar</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Memuat data siswa dari penyimpanan lokal browser
+            const nama = localStorage.getItem("siswa_nama") || "Siswa Baru";
+            const kelas = localStorage.getItem("siswa_kelas") || "IV";
+            
+            // Mengambil status kemajuan level terakhir siswa (Default: level 1)
+            const currentProgress = parseInt(localStorage.getItem("progress_level") || "1");
+            const pretestScore = parseInt(localStorage.getItem("pretest_score") || "0");
+
+            // Render informasi profil siswa ke elemen UI dashboard
+            document.getElementById("lblNama").innerText = nama;
+            document.getElementById("lblKelas").innerText = `Kelas ${kelas}`;
+            
+            // Konversi kalkulasi skor pre-test menjadi bintang pajangan di menu utama
+            const bintangEst = Math.floor(pretestScore / 30);
+            document.getElementById("lblTotalBintang").innerText = bintangEst;
+
+            // Proses pembukaan level secara dinamis berdasarkan data progress
+            for (let i = 1; i <= 6; i++) {
+                const node = document.getElementById(`node-${i}`);
+                const statusIcon = document.getElementById(`status-${i}`);
+
+                if (i <= currentProgress) {
+                    // Jika level sudah bisa dimainkan
+                    node.classList.remove("locked");
+                    if (i < currentProgress) {
+                        statusIcon.innerText = "✅"; // Level Selesai
+                    } else {
+                        statusIcon.innerText = "🏮"; // Level Aktif saat ini
+                    }
+                } else {
+                    // Jika level masih terkunci
+                    node.classList.add("locked");
+                    statusIcon.innerText = "🔒";
+                }
+            }
+        });
+
+        function launchLevel(levelNumber) {
+            const currentProgress = parseInt(localStorage.getItem("progress_level") || "1");
+            
+            // Mencegah klik pada level yang berstatus terkunci
+            if (levelNumber > currentProgress) {
+                alert("Selesaikan level sebelumnya terlebih dahulu untuk menyalakan Lentera ini!");
+                return;
+            }
+
+            // Simpan status level mana yang sedang diklik ke session penyimpanan
+            localStorage.setItem("active_level_session", levelNumber);
+
+            // Efek transisi keluar halaman lobi
+            const page = document.getElementById("menuPage");
+            page.classList.add("fade-out-active");
+
+            // Pindah ke halaman cerita pengantar level inti (story-level.html)
+            setTimeout(() => {
+                window.location.href = "story-level.html";
+            }, 400);
+        }
+
+        function resetGameProgress() {
+            if (confirm("Apakah kamu yakin ingin mengulang seluruh pencapaian level dari awal?")) {
+                localStorage.setItem("progress_level", "1");
+                window.location.reload();
+            }
+        }
+    </script>
+</body>
+</html>

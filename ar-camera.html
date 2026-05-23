@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lentera Bali - Kamera AR</title>
+    <style>
+        /* Reset Dasar & Layout Mobile Frame */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            background-color: #0b1325;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Tampilan Mobile 9:16 */
+        .mobile-container {
+            width: 100%;
+            max-width: 412px;
+            height: 100vh;
+            max-height: 892px;
+            background: #000000;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            opacity: 0;
+            animation: fadeInPage 0.4s ease-out forwards;
+        }
+
+        /* Ornamen Garis Atas Tradisional */
+        .decor-border-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 12px;
+            background: linear-gradient(90deg, #e63946, #d4a359, #e63946);
+            z-index: 10;
+        }
+
+        /* Elemen Video Input Kamera Asli */
+        #webcamVideo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+            transform: scaleX(1); /* Set ke -1 jika ingin efek mirror di laptop */
+        }
+
+        /* Top HUD Overlay (Z-Index di atas Video) */
+        .ar-top-bar {
+            position: relative;
+            z-index: 5;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .ar-badge {
+            background: rgba(230, 57, 70, 0.85);
+            border: 1px solid #e63946;
+            color: #fff;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 6px 14px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #fff;
+            border-radius: 50%;
+            animation: blink 1s infinite alternate;
+        }
+
+        /* Area Bingkai Target Scanner (Reticle) */
+        .scanner-frame-zone {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 260px;
+            height: 260px;
+            border: 2px dashed rgba(212, 163, 89, 0.6);
+            border-radius: 24px;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        /* Sudut Ornamen Bingkai */
+        .scanner-corner {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            border: 4px solid #d4a359;
+        }
+        .tl { top: -4px; left: -4px; border-right: none; border-bottom: none; border-top-left-radius: 12px; }
+        .tr { top: -4px; right: -4px; border-left: none; border-bottom: none; border-top-right-radius: 12px; }
+        .bl { bottom: -4px; left: -4px; border-right: none; border-top: none; border-bottom-left-radius: 12px; }
+        .br { bottom: -4px; right: -4px; border-left: none; border-top: none; border-bottom-right-radius: 12px; }
+
+        /* Hasil Objek Kebudayaan 3D/Pop-up (Simulasi Render AR) */
+        .ar-object-render {
+            position: absolute;
+            z-index: 3;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            animation: popObject 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .object-graphic {
+            font-size: 85px;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.6));
+            animation: hoverObject 2.5s ease-in-out infinite alternate;
+        }
+
+        .object-title-tag {
+            background: linear-gradient(135deg, #1b263b 0%, #0d1b2a 100%);
+            border: 1.5px solid #d4a359;
+            color: #fff;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 6px 16px;
+            border-radius: 8px;
+            margin-top: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            letter-spacing: 0.5px;
+        }
+
+        /* Panel Instruksi Bawah */
+        .ar-bottom-panel {
+            position: relative;
+            z-index: 5;
+            width: 100%;
+            background: rgba(13, 27, 42, 0.9);
+            border: 1.5px solid rgba(212, 163, 89, 0.3);
+            border-radius: 16px;
+            padding: 16px;
+            backdrop-filter: blur(8px);
+            margin-bottom: 10px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .instruction-text {
+            color: #f1faee;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 14px;
+        }
+
+        /* Tombol Utama Nyalakan Lentera */
+        .btn-ar-action {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #e63946 0%, #b71c1c 100%);
+            border: 2px solid #d4a359;
+            border-radius: 10px;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(230, 57, 70, 0.4);
+            transition: transform 0.1s;
+        }
+
+        .btn-ar-action:active {
+            transform: scale(0.98);
+        }
+
+        /* Animasi Kebisingan */
+        @keyframes fadeInPage { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes blink { from { opacity: 0.3; } to { opacity: 1; } }
+        @keyframes popObject { from { transform: translate(-50%, -50%) scale(0); opacity: 0; } to { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
+        @keyframes hoverObject { from { transform: translateY(0px) rotate(0deg); } to { transform: translateY(-10px) rotate(3deg); } }
+        .fade-out-active { transition: opacity 0.4s ease-in-out; opacity: 0 !important; }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container" id="arPage">
+        <div class="decor-border-top"></div>
+
+        <video id="webcamVideo" autoplay playsinline></video>
+
+        <div class="ar-top-bar">
+            <div class="ar-badge">
+                <div class="pulse-dot"></div>
+                <span id="lblModeStatus">MENCARI TARGET...</span>
+            </div>
+        </div>
+
+        <div class="scanner-frame-zone" id="reticleFrame">
+            <div class="scanner-corner tl"></div>
+            <div class="scanner-corner tr"></div>
+            <div class="scanner-corner bl"></div>
+            <div class="scanner-corner br"></div>
+        </div>
+
+        <div class="ar-object-render" id="arRenderObject" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <div class="object-graphic" id="lblObjectGraphic">🛕</div>
+            <div class="object-title-tag" id="lblObjectTitle">Pura Kahyangan</div>
+        </div>
+
+        <div class="ar-bottom-panel">
+            <p class="instruction-text" id="lblInstructions">
+                Arahkan kamera smartphone ke ruangan terbuka atau gambar target untuk memunculkan visualisasi objek Tri Hita Karana.
+            </p>
+            <button class="btn-ar-action" id="btnArPrimary" onclick="triggerLanterneActivation()">Pindai Target AR</button>
+        </div>
+    </div>
+
+    <script>
+        // Mapping Objek Kebudayaan AR Khusus Berdasarkan Nomor Sesi Level Aktif
+        const arObjectsDatabase = {
+            1: { name: "Canang Sari Tradisional", graphic: "🧺", desc: "Misi Utama Parahyangan Berhasil! Lentera Suci Sarana Upacara siap dinyalakan!" },
+            2: { name: "Meru Solas Tumpang", graphic: "🛕", desc: "Misi Kedua Parahyangan Berhasil! Lentera Istilah Spiritual Bali telah memancar terang!" },
+            3: { name: "Prasti Lontar Basa Alus", graphic: "📜", desc: "Misi Utama Pawongan Berhasil! Lentera Etika Berbahasa Bali kini menyala harmoni!" },
+            4: { name: "Bale Banjar Tradisional", graphic: "🛖", desc: "Misi Kedua Pawongan Berhasil! Lentera Interaksi Sosial & Gotong Royong telah aktif!" },
+            5: { name: "Bendungan Air Subak", graphic: "💧", desc: "Misi Utama Palemahan Berhasil! Lentera Irigasi Sistem Subak Pertanian menyala!" },
+            6: { name: "Hutan Adat (Alas Kekeran)", graphic: "🌳", desc: "Selamat! Seluruh Lentera Tri Hita Karana Menyala Sempurna Menjaga Kelestarian Bali!" }
+        };
+
+        let activeLevelSession = 1;
+        let isObjectDetected = false;
+        let videoStream = null;
+
+        document.addEventListener("DOMContentLoaded", () => {
+            activeLevelSession = parseInt(localStorage.getItem("active_level_session") || "1");
+            
+            // Menginisialisasi Akses Hardware Kamera Perangkat (Webcam/HP Camera)
+            initCameraHardware();
+        });
+
+        function initCameraHardware() {
+            const video = document.getElementById("webcamVideo");
+
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                // Konfigurasi kamera belakang (environment) untuk mobile responsive browser
+                navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+                .then((stream) => {
+                    videoStream = stream;
+                    video.srcObject = stream;
+                })
+                .catch((error) => {
+                    console.error("Gagal mengakses fungsionalitas kamera: ", error);
+                    // Fallback background gradien jika izin kamera ditolak/tidak didukung di localhost desainer
+                    document.getElementById("arPage").style.background = "linear-gradient(180deg, #111a2e 0%, #0d1b2a 100%)";
+                    document.getElementById("lblInstructions").innerText = "[Mode Simulasi] Kamera tidak terdeteksi. Anda dapat menguji alur visual menggunakan tombol simulasi di bawah.";
+                });
+            }
+        }
+
+        function triggerLanterneActivation() {
+            // FASE 1: MENEMUKAN/MEMINDAI TARGET AR
+            if (!isObjectDetected) {
+                isObjectDetected = true;
+                
+                const currentData = arObjectsDatabase[activeLevelSession];
+
+                // Update Komponen Teks Dan Grafis Model AR Dinamis
+                document.getElementById("lblObjectGraphic").innerText = currentData.graphic;
+                document.getElementById("lblObjectTitle").innerText = currentData.name;
+                document.getElementById("lblInstructions").innerText = currentData.desc;
+
+                // Modifikasi Tampilan Interface HUD
+                document.getElementById("lblModeStatus").innerText = "TARGET TERKUNCI ✅";
+                document.getElementById("lblModeStatus").parentElement.style.backgroundColor = "rgba(76, 175, 80, 0.85)";
+                document.getElementById("lblModeStatus").parentElement.style.borderColor = "#4caf50";
+                
+                document.getElementById("reticleFrame").style.display = "none"; // Hilangkan reticle pembantu
+                document.getElementById("arRenderObject").style.display = "flex"; // Tampilkan model visual
+
+                // Ubah Teks Tombol Aksi Menjadi Klaim Energi Kemenangan Level
+                document.getElementById("btnArPrimary").innerText = "Nyalakan Lentera 🌟";
+                document.getElementById("btnArPrimary").style.background = "linear-gradient(135deg, #4caf50 0%, #2e7d32 100%)";
+                document.getElementById("btnArPrimary").style.borderColor = "#d4a359";
+            } 
+            // FASE 2: MENYALAKAN LENTERA DAN MENYIMPAN PROGRESS BARU
+            else {
+                finalizeLevelProgress();
+            }
+        }
+
+        function finalizeLevelProgress() {
+            // Ambil progress level global saat ini (Default: 1)
+            const currentGlobalProgress = parseInt(localStorage.getItem("progress_level") || "1");
+
+            // Jika level yang diselesaikan sama dengan batas progress saat ini, tingkatkan progressnya
+            if (activeLevelSession === currentGlobalProgress) {
+                const nextProgress = currentGlobalProgress + 1;
+                // Batasi maksimal level hingga level 6 (Level Akhir)
+                if (nextProgress <= 6) {
+                    localStorage.setItem("progress_level", nextProgress.toString());
+                } else {
+                    // Jika menamatkan level 6, set flag penamat permainan OPSI
+                    localStorage.setItem("game_completed_status", "true");
+                }
+            }
+
+            // Matikan streaming kamera sebelum meninggalkan halaman demi keamanan privasi hardware
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+            }
+
+            // Jalankan animasi efek transisi keluar halaman
+            const page = document.getElementById("arPage");
+            page.classList.add("fade-out-active");
+
+            // Evaluasi pengalihan: Jika level 6 tamat arahkan ke post-test, jika tidak kembalikan ke menu utama
+            setTimeout(() => {
+                if (activeLevelSession === 6) {
+                    window.location.href = "instruction-posttest.html"; // Menuju halaman instruksi evaluasi akhir
+                } else {
+                    window.location.href = "main-menu.html"; // Kembali ke lobi peta level
+                }
+            }, 400);
+        }
+    </script>
+</body>
+</html>
