@@ -24,13 +24,16 @@
             overflow: hidden;
         }
 
-        /* Tampilan Mobile 9:16 */
+        /* Tampilan Mobile 9:16 + Integrasi Background Baru */
         .mobile-container {
             width: 100%;
             max-width: 412px;
             height: 100vh;
             max-height: 892px;
-            background: linear-gradient(180deg, #0d1b2a 0%, #1b263b 60%, #111a2e 100%);
+            /* Memasang background-splash.png dengan fallback linear gradient */
+            background: linear-gradient(180deg, rgba(13, 27, 42, 0.4) 0%, rgba(11, 19, 37, 0.75) 100%), 
+                        url('background-splash.png') no-repeat center center;
+            background-size: cover;
             position: relative;
             overflow: hidden;
             display: flex;
@@ -52,13 +55,20 @@
             width: 100%;
             height: 12px;
             background: linear-gradient(90deg, #e63946, #d4a359, #e63946);
+            z-index: 2;
         }
 
-        /* Bagian Atas / Header Kartu */
+        /* Bagian Atas / Header Kartu dengan Backplate Blur */
         .header-section {
             text-align: center;
             margin-top: 20px;
             width: 100%;
+            z-index: 2;
+            background: rgba(11, 19, 37, 0.6);
+            padding: 12px 16px;
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(4px);
         }
 
         .mini-lantern {
@@ -66,34 +76,36 @@
             animation: swing 3s ease-in-out infinite;
             transform-origin: top center;
             display: inline-block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .header-section h2 {
-            color: #d4a359;
+            color: #e5b842;
             font-size: 22px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
 
         .header-section p {
             color: #f1faee;
             font-size: 12px;
-            opacity: 0.7;
+            opacity: 0.9;
             margin-top: 4px;
+            font-weight: 500;
         }
 
-        /* Form Card Center */
+        /* Form Card Center (Ditingkatkan kegelapan & blur demi kontras teks emas) */
         .form-container {
             width: 100%;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(212, 163, 89, 0.2);
+            background: rgba(13, 27, 42, 0.75);
+            border: 2px solid rgba(212, 163, 89, 0.4);
             border-radius: 16px;
             padding: 24px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
             margin: auto 0;
+            z-index: 2;
         }
 
         .input-group {
@@ -103,19 +115,20 @@
 
         .input-group label {
             display: block;
-            color: #d4a359;
+            color: #e5b842;
             font-size: 12px;
-            font-weight: 600;
+            font-weight: bold;
             margin-bottom: 8px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
         }
 
         .input-group input, .input-group select {
             width: 100%;
             padding: 14px 16px;
-            background: rgba(13, 27, 42, 0.8);
-            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            background: rgba(11, 19, 37, 0.9);
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
             border-radius: 10px;
             color: #fff;
             font-size: 15px;
@@ -127,23 +140,24 @@
 
         .input-group input:focus, .input-group select:focus {
             border-color: #d4a359;
-            box-shadow: 0 0 8px rgba(212, 163, 89, 0.3);
+            box-shadow: 0 0 10px rgba(212, 163, 89, 0.4);
             background: #0d1b2a;
         }
 
         /* Kustomisasi drop-down select option */
         .input-group select option {
-            background-color: #1b263b;
+            background-color: #111a2e;
             color: white;
         }
 
         /* Pesan Error Validasi */
         .error-message {
-            color: #e63946;
+            color: #ff4d4d;
             font-size: 11px;
             margin-top: 5px;
             display: none;
-            font-weight: 500;
+            font-weight: bold;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
         }
 
         /* Tombol Main / Submit */
@@ -151,7 +165,7 @@
             width: 100%;
             padding: 15px;
             background: linear-gradient(135deg, #e63946 0%, #b71c1c 100%);
-            border: 2px solid #d4a359;
+            border: 2px solid #e5b842;
             border-radius: 10px;
             color: white;
             font-size: 16px;
@@ -159,7 +173,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(230, 57, 70, 0.4);
+            box-shadow: 0 4px 15px rgba(230, 57, 70, 0.5);
             transition: transform 0.1s ease, box-shadow 0.3s ease;
             margin-top: 10px;
         }
@@ -171,10 +185,17 @@
 
         /* Bagian Footer */
         .footer-text {
-            color: rgba(241, 250, 238, 0.4);
+            color: rgba(251, 252, 250, 0.7);
+            font-weight: 500;
             font-size: 11px;
             text-align: center;
             width: 100%;
+            z-index: 2;
+            background: rgba(11, 19, 37, 0.6);
+            padding: 8px;
+            border-radius: 10px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         /* Animasi */
@@ -189,7 +210,7 @@
             100% { transform: rotate(-5deg); }
         }
 
-        /* Transisi Keluar Keluar */
+        /* Transisi Keluar */
         .fade-out-active {
             transition: all 0.5s ease-in-out;
             opacity: 0 !important;
@@ -240,7 +261,6 @@
 
     <script>
         function handleLogin(event) {
-            // Mencegah reload halaman bawaan form browser
             event.preventDefault();
 
             const nameInput = document.getElementById("studentName").value.trim();
@@ -268,17 +288,16 @@
                 classError.style.display = "none";
             }
 
-            // Jika form valid, simpan data ke LocalStorage dan lanjutkan ke instruksi Pre-Test
+            // Jika valid, simpan ke LocalStorage dan teruskan ke halaman instruksi Pre-Test
             if (isValid) {
-                // Menyimpan data profile siswa secara lokal di browser
                 localStorage.setItem("siswa_nama", nameInput);
                 localStorage.setItem("siswa_kelas", classInput);
-                localStorage.setItem("progress_level", "1"); // Menyetel progress awal ke level 1
+                localStorage.setItem("progress_level", "1"); 
 
                 // Animasi transisi keluar halaman
                 loginPage.classList.add("fade-out-active");
 
-                // Berpindah ke halaman petunjuk pra-uji setelah animasi selesai
+                // Berpindah ke instruksi pre-test setelah animasi rampung
                 setTimeout(() => {
                     window.location.href = "instruction-pretest.html"; 
                 }, 500);
