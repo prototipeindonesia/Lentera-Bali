@@ -51,6 +51,7 @@
             width: 100%;
             height: 12px;
             background: linear-gradient(90deg, #e63946, #d4a359, #e63946);
+            z-index: 10;
         }
 
         /* Top Profile Dashboard Bar */
@@ -62,8 +63,14 @@
             background: rgba(255, 255, 255, 0.06);
             padding: 10px 16px;
             border-radius: 30px;
-            border: 1px solid rgba(212, 163, 89, 0.2);
+            border: 1px solid rgba(212, 163, 89, 0.3);
             width: 100%;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .top-profile-bar:active {
+            background: rgba(212, 163, 89, 0.15);
         }
 
         .student-info {
@@ -89,7 +96,7 @@
             font-size: 13px;
             font-weight: 600;
             max-width: 140px;
-            white-width: nowrap;
+            white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
@@ -113,19 +120,47 @@
             gap: 4px;
         }
 
+        /* BARU: Widget Status 3 Lentera Harmoni */
+        .lantern-status-widget {
+            background: rgba(13, 27, 42, 0.5);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 14px;
+            padding: 10px 12px;
+            margin-top: 12px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .lantern-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            opacity: 0.4;
+            transition: opacity 0.3s;
+        }
+
+        .lantern-item.active {
+            opacity: 1;
+            filter: drop-shadow(0 0 6px #e5b842);
+        }
+
+        .lantern-icon { font-size: 20px; }
+        .lantern-name { color: #f1faee; font-size: 9px; font-weight: bold; letter-spacing: 0.5px; }
+
         /* Konten Peta Petualangan (Scrollable Node) */
         .map-zone {
             width: 100%;
-            height: 65vh;
-            margin: 20px 0;
+            flex: 1;
+            margin: 15px 0;
             overflow-y: auto;
             padding-right: 4px;
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 20px;
         }
 
-        /* Menyembunyikan scrollbar default bawaan browser */
         .map-zone::-webkit-scrollbar {
             width: 4px;
         }
@@ -228,32 +263,114 @@
             font-size: 16px;
         }
 
-        /* Tombol Footer Reset / Keluar */
+        /* Tombol Footer Reset */
         .bottom-action-bar {
             width: 100%;
             text-align: center;
+            padding-top: 5px;
         }
 
         .btn-reset {
             background: none;
             border: none;
-            color: rgba(230, 57, 70, 0.6);
+            color: rgba(255, 255, 255, 0.3);
             font-size: 11px;
             text-decoration: underline;
             cursor: pointer;
             letter-spacing: 0.5px;
         }
 
-        /* Animasi */
-        @keyframes fadeInPage {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        /* BARU: Modal Pop-up Box Profil */
+        .profile-modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 19, 37, 0.85);
+            backdrop-filter: blur(6px);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
         }
 
-        .fade-out-active {
-            transition: opacity 0.4s ease-in-out;
-            opacity: 0 !important;
+        .profile-card {
+            width: 100%;
+            background: #111a2e;
+            border: 2px solid #d4a359;
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            animation: modalPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
+
+        .btn-close-modal {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.4);
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .avatar-large {
+            font-size: 45px;
+            background: #d4a359;
+            width: 75px;
+            height: 75px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            margin-bottom: 12px;
+        }
+
+        .profile-card h3 { color: #fff; font-size: 18px; margin-bottom: 4px; }
+        .profile-card p.class-tag { color: #d4a359; font-size: 12px; font-weight: bold; margin-bottom: 20px; }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-box {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px;
+            padding: 10px;
+        }
+        .stat-val { color: #e5b842; font-size: 16px; font-weight: bold; }
+        .stat-lbl { color: rgba(241, 250, 238, 0.5); font-size: 10px; margin-top: 2px; }
+
+        .btn-logout {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #e63946 0%, #b71c1c 100%);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .btn-logout:active { transform: scale(0.98); }
+
+        /* Animasi */
+        @keyframes fadeInPage { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes modalPop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .fade-out-active { transition: opacity 0.4s ease-in-out; opacity: 0 !important; }
     </style>
 </head>
 <body>
@@ -261,7 +378,7 @@
     <div class="mobile-container" id="menuPage">
         <div class="decor-border-top"></div>
 
-        <div class="top-profile-bar">
+        <div class="top-profile-bar" onclick="openProfileModal()">
             <div class="student-info">
                 <div class="avatar-mini">👦🏻</div>
                 <div class="meta-text">
@@ -271,6 +388,21 @@
             </div>
             <div class="star-badge">
                 <span>⭐</span> <span id="lblTotalBintang">0</span>
+            </div>
+        </div>
+
+        <div class="lantern-status-widget">
+            <div class="lantern-item" id="lantern-parahyangan">
+                <div class="lantern-icon">🏮</div>
+                <div class="lantern-name">Parahyangan</div>
+            </div>
+            <div class="lantern-item" id="lantern-pawongan">
+                <div class="lantern-icon">🏮</div>
+                <div class="lantern-name">Pawongan</div>
+            </div>
+            <div class="lantern-item" id="lantern-palemahan">
+                <div class="lantern-icon">🏮</div>
+                <div class="lantern-name">Palemahan</div>
             </div>
         </div>
 
@@ -359,64 +491,95 @@
         <div class="bottom-action-bar">
             <button class="btn-reset" onclick="resetGameProgress()">Reset Progress Belajar</button>
         </div>
+
+        <div class="profile-modal-overlay" id="profileModal">
+            <div class="profile-card">
+                <button class="btn-close-modal" onclick="closeProfileModal()">×</button>
+                <div class="avatar-large">👦🏻</div>
+                <h3 id="mdlNama">Siswa</h3>
+                <p class="class-tag" id="mdlKelas">Kelas --</p>
+                
+                <div class="stats-container">
+                    <div class="stat-box">
+                        <div class="stat-val" id="mdlPreScore">0</div>
+                        <div class="stat-lbl">Skor Pre-Test</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-val" id="mdlLevelProgress">0 / 6</div>
+                        <div class="stat-lbl">Misi Terbuka</div>
+                    </div>
+                </div>
+
+                <button class="btn-logout" onclick="triggerLogOut()">Keluar Aplikasi 🚪</button>
+            </div>
+        </div>
     </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // Memuat data siswa dari penyimpanan lokal browser
             const nama = localStorage.getItem("siswa_nama") || "Siswa Baru";
             const kelas = localStorage.getItem("siswa_kelas") || "IV";
-            
-            // Mengambil status kemajuan level terakhir siswa (Default: level 1)
             const currentProgress = parseInt(localStorage.getItem("progress_level") || "1");
             const pretestScore = parseInt(localStorage.getItem("pretest_score") || "0");
 
-            // Render informasi profil siswa ke elemen UI dashboard
+            // Render komponen lobi atas
             document.getElementById("lblNama").innerText = nama;
             document.getElementById("lblKelas").innerText = `Kelas ${kelas}`;
             
-            // Konversi kalkulasi skor pre-test menjadi bintang pajangan di menu utama
             const bintangEst = Math.floor(pretestScore / 30);
             document.getElementById("lblTotalBintang").innerText = bintangEst;
 
-            // Proses pembukaan level secara dinamis berdasarkan data progress
+            // Logika Evaluasi Aktivasi 3 Lentera Utama
+            if (currentProgress > 2) document.getElementById("lantern-parahyangan").classList.add("active");
+            if (currentProgress > 4) document.getElementById("lantern-pawongan").classList.add("active");
+            if (currentProgress > 6 || localStorage.getItem("game_completed_status") === "true") {
+                document.getElementById("lantern-palemahan").classList.add("active");
+            }
+
+            // Render peta level linear
             for (let i = 1; i <= 6; i++) {
                 const node = document.getElementById(`node-${i}`);
                 const statusIcon = document.getElementById(`status-${i}`);
 
                 if (i <= currentProgress) {
-                    // Jika level sudah bisa dimainkan
                     node.classList.remove("locked");
                     if (i < currentProgress) {
-                        statusIcon.innerText = "✅"; // Level Selesai
+                        statusIcon.innerText = "✅";
                     } else {
-                        statusIcon.innerText = "🏮"; // Level Aktif saat ini
+                        statusIcon.innerText = "🏮";
                     }
                 } else {
-                    // Jika level masih terkunci
                     node.classList.add("locked");
                     statusIcon.innerText = "🔒";
                 }
             }
+
+            // Menyimpan data siap pakai ke elemen modal
+            document.getElementById("mdlNama").innerText = nama;
+            document.getElementById("mdlKelas").innerText = `Kelas ${kelas}`;
+            document.getElementById("mdlPreScore").innerText = pretestScore;
+            document.getElementById("mdlLevelProgress").innerText = `${currentProgress} / 6`;
         });
+
+        function openProfileModal() {
+            document.getElementById("profileModal").style.display = "flex";
+        }
+
+        function closeProfileModal() {
+            document.getElementById("profileModal").style.display = "none";
+        }
 
         function launchLevel(levelNumber) {
             const currentProgress = parseInt(localStorage.getItem("progress_level") || "1");
-            
-            // Mencegah klik pada level yang berstatus terkunci
             if (levelNumber > currentProgress) {
                 alert("Selesaikan level sebelumnya terlebih dahulu untuk menyalakan Lentera ini!");
                 return;
             }
 
-            // Simpan status level mana yang sedang diklik ke session penyimpanan
             localStorage.setItem("active_level_session", levelNumber);
-
-            // Efek transisi keluar halaman lobi
             const page = document.getElementById("menuPage");
             page.classList.add("fade-out-active");
 
-            // Pindah ke halaman cerita pengantar level inti (story-level.html)
             setTimeout(() => {
                 window.location.href = "story-level.html";
             }, 400);
@@ -426,6 +589,14 @@
             if (confirm("Apakah kamu yakin ingin mengulang seluruh pencapaian level dari awal?")) {
                 localStorage.setItem("progress_level", "1");
                 window.location.reload();
+            }
+        }
+
+        // Fungsi baru untuk keluar dan membersihkan identitas sesi di browser
+        function triggerLogOut() {
+            if (confirm("Apakah kamu yakin ingin keluar? Seluruh data nama dan skor pre-test akan dibersihkan dari penyimpanan lokal.")) {
+                localStorage.clear(); // Bersihkan memori localstorage
+                window.location.href = "index.html"; // Lompat kembali ke halaman registrasi awal
             }
         }
     </script>
