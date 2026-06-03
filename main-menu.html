@@ -24,72 +24,69 @@
             overflow: hidden;
         }
 
-        /* Tampilan Mobile 9:16 + Integrasi Peta Latar Belakang Baru */
+        /* Tampilan Responsif dengan bgmenu.jpg */
         .mobile-container {
             width: 100%;
-            max-width: 412px;
             height: 100vh;
-            max-height: 892px;
-            /* Memasang background-menu.png dengan pelindung gradien agar UI atas/bawah tetap kontras */
-            background: linear-gradient(180deg, rgba(11, 19, 37, 0.75) 0%, rgba(13, 27, 42, 0.3) 40%, rgba(11, 19, 37, 0.8) 100%), 
-                        url('Background-menu.png') no-repeat center center;
+            background: linear-gradient(180deg, rgba(11, 19, 37, 0.85) 0%, rgba(13, 27, 42, 0.3) 50%, rgba(11, 19, 37, 0.95) 100%), 
+                        url('bgmenu.jpg') no-repeat center center;
             background-size: cover;
             position: relative;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 24px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            border-radius: 12px;
+            padding: 16px;
             opacity: 0;
             animation: fadeInPage 0.4s ease-out forwards;
         }
 
-        /* Ornamen Garis Atas Tradisional */
+        @media (min-width: 1025px) {
+            .mobile-container {
+                max-width: 412px;
+                max-height: 892px;
+                border-radius: 20px;
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+            }
+        }
+
         .decor-border-top {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 12px;
+            height: 10px;
             background: linear-gradient(90deg, #e63946, #d4a359, #e63946);
             z-index: 10;
         }
 
-        /* Top Profile Dashboard Bar dengan Blur Efek */
+        /* Top Profile Bar */
         .top-profile-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 15px;
-            background: rgba(11, 19, 37, 0.75);
-            padding: 10px 16px;
+            margin-top: 10px;
+            background: rgba(11, 19, 37, 0.85);
+            padding: 8px 14px;
             border-radius: 30px;
             border: 1.5px solid #e5b842;
             width: 100%;
             cursor: pointer;
             z-index: 5;
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            transition: background 0.2s, transform 0.1s;
+            transition: transform 0.1s;
         }
 
-        .top-profile-bar:node:active {
-            transform: scale(0.98);
-        }
-
-        .student-info {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+        .top-profile-bar:active { transform: scale(0.98); }
+        .student-info { display: flex; align-items: center; gap: 8px; }
 
         .avatar-mini {
-            font-size: 20px;
+            font-size: 16px;
             background: #d4a359;
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -99,204 +96,225 @@
 
         .meta-text h4 {
             color: #fff;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
-            max-width: 140px;
+            max-width: 130px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .meta-text p {
-            color: #e5b842;
-            font-size: 10px;
-            font-weight: bold;
-        }
+        .meta-text p { color: #e5b842; font-size: 9px; font-weight: bold; }
 
         .star-badge {
-            background: rgba(229, 184, 66, 0.25);
+            background: rgba(229, 184, 66, 0.2);
             border: 1px solid #e5b842;
-            padding: 4px 12px;
+            padding: 3px 10px;
             border-radius: 20px;
             color: #e5b842;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
             display: flex;
             align-items: center;
             gap: 4px;
         }
 
-        /* Widget Status 3 Lentera Harmoni */
+        /* Widget Status Lentera */
         .lantern-status-widget {
-            background: rgba(11, 19, 37, 0.8);
+            background: rgba(11, 19, 37, 0.85);
             border: 1px solid rgba(212, 163, 89, 0.3);
-            border-radius: 14px;
-            padding: 10px 12px;
-            margin-top: 12px;
+            border-radius: 12px;
+            padding: 8px;
+            margin-top: 10px;
             display: flex;
             justify-content: space-around;
             align-items: center;
             z-index: 5;
-            backdrop-filter: blur(4px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
         }
 
         .lantern-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
-            opacity: 0.35;
+            gap: 2px;
+            opacity: 0.3;
             transition: opacity 0.3s, filter 0.3s;
         }
 
         .lantern-item.active {
             opacity: 1;
-            filter: drop-shadow(0 0 8px #e5b842);
+            filter: drop-shadow(0 0 6px #e5b842);
         }
 
-        .lantern-icon { font-size: 20px; }
-        .lantern-name { color: #f1faee; font-size: 9px; font-weight: bold; letter-spacing: 0.5px; }
+        .lantern-icon { font-size: 16px; }
+        .lantern-name { color: #f1faee; font-size: 8px; font-weight: bold; }
 
-        /* Konten Peta Petualangan (Scrollable Node dengan transparansi dinamis) */
+        /* Area Scroll Jalur Petualangan - Background Transparan Penuh */
         .map-zone {
             width: 100%;
             flex: 1;
-            margin: 15px 0;
+            margin: 12px 0;
             overflow-y: auto;
-            padding-right: 4px;
+            padding-right: 2px;
+            padding-bottom: 20px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 16px;
             z-index: 5;
         }
 
-        .map-zone::-webkit-scrollbar {
-            width: 4px;
-        }
-        .map-zone::-webkit-scrollbar-thumb {
-            background: rgba(212, 163, 89, 0.5);
-            border-radius: 10px;
-        }
+        .map-zone::-webkit-scrollbar { width: 3px; }
+        .map-zone::-webkit-scrollbar-thumb { background: rgba(212, 163, 89, 0.3); }
 
-        /* Klaster Wilayah Kategori Tri Hita Karana */
-        .thk-cluster {
+        /* Judul Klaster Kelompok Kategori */
+        .cluster-header {
             width: 100%;
-            background: rgba(11, 19, 37, 0.75);
-            border: 1.5px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            padding: 16px;
-            backdrop-filter: blur(4px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+            text-align: center;
+            margin-bottom: 4px;
+            margin-top: 8px;
         }
 
         .cluster-title {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: bold;
             color: #fff;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
-            padding: 4px 10px;
-            border-radius: 6px;
+            padding: 3px 10px;
+            border-radius: 20px;
             display: inline-block;
-            margin-bottom: 12px;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
         }
 
         .bg-parahyangan { background-color: #b71c1c; border: 1px solid #e63946; }
         .bg-pawongan { background-color: #0d47a1; border: 1px solid #2196f3; }
         .bg-palemahan { background-color: #1b5e20; border: 1px solid #4caf50; }
 
-        /* Node Jalur Grid Level */
-        .level-grid {
+        /* Grid Jalur Lintasan Petualangan Zig-Zag */
+        .level-zigzag-road {
             display: flex;
             flex-direction: column;
             gap: 12px;
+            width: 100%;
+            position: relative;
         }
 
+        /* Elemen Kotak Mini Card yang Diperkecil */
         .level-node {
-            width: 100%;
-            background: rgba(27, 38, 59, 0.85);
-            border: 1.5px solid rgba(212, 163, 89, 0.4);
+            width: 46%; /* Mengambil kurang dari setengah lebar kontainer */
+            background: rgba(27, 38, 59, 0.9);
+            border: 1.2px solid rgba(212, 163, 89, 0.3);
             border-radius: 12px;
-            padding: 14px 16px;
+            padding: 8px;
             display: flex;
-            justify-space: space-between;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column;
+            gap: 6px;
+            min-height: 76px;
             transition: all 0.2s ease;
             cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        /* Aturan Pola Formasi Baris Zig-Zag (Ganjil Kiri, Genap Kanan) */
+        .level-node.pos-left {
+            align-self: flex-start;
+        }
+
+        .level-node.pos-right {
+            align-self: flex-end;
         }
 
         .level-node:active:not(.locked) {
-            transform: scale(0.97);
+            transform: scale(0.95);
             background: #25334f;
         }
 
-        .level-left-info {
+        .level-node-top {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 12px;
+            width: 100%;
         }
 
         .level-number {
-            width: 32px;
-            height: 32px;
+            width: 18px;
+            height: 18px;
             background: rgba(229, 184, 66, 0.15);
-            border: 2px solid #e5b842;
+            border: 1px solid #e5b842;
             color: #e5b842;
-            border-radius: 8px;
+            border-radius: 4px;
             display: flex;
             justify-content: center;
             align-items: center;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 9px;
+        }
+
+        .level-status-icon {
+            font-size: 11px;
         }
 
         .level-details h5 {
             color: #ffffff;
-            font-size: 14px;
+            font-size: 10.5px;
             font-weight: 600;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            line-height: 1.2;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .level-details p {
-            color: rgba(241, 250, 238, 0.85);
-            font-size: 11px;
-            margin-top: 2px;
+            color: rgba(241, 250, 238, 0.55);
+            font-size: 8px;
+            margin-top: 1px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        /* Status Kondisi Level Terkunci */
         .level-node.locked {
-            opacity: 0.4;
-            background: rgba(13, 27, 42, 0.9);
-            border-color: rgba(255,255,255,0.1);
+            opacity: 0.5;
+            background: rgba(13, 27, 42, 0.95);
+            border-color: rgba(255,255,255,0.05);
             cursor: not-allowed;
         }
 
-        .level-status-icon {
-            font-size: 16px;
+        /* Karakter Full Body - Berdiri Megah & Terlihat Jelas di Sisi Belakang Kanan */
+        .full-body-character {
+            position: absolute;
+            bottom: 35px;
+            right: 0px;
+            width: 165px; /* Diperbesar karena card zig-zag sudah memberi ruang kosong yang luas */
+            height: auto;
+            z-index: 3; /* Berada di belakang Card kanan, namun di depan Background peta */
+            pointer-events: none;
+            filter: drop-shadow(0 8px 16px rgba(0,0,0,0.6));
+            animation: floatCharacter 4s ease-in-out infinite;
+            display: block;
         }
 
-        /* Tombol Footer Reset */
+        /* Tombol Footer */
         .bottom-action-bar {
             width: 100%;
-            text-align: center;
-            padding-top: 5px;
-            z-index: 5;
+            text-align: left;
+            padding-top: 4px;
+            z-index: 6;
         }
 
         .btn-reset {
-            background: rgba(11, 19, 37, 0.6);
-            border: none;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 11px;
-            text-decoration: underline;
-            padding: 4px 12px;
-            border-radius: 8px;
+            background: rgba(11, 19, 37, 0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 9px;
+            padding: 4px 10px;
+            border-radius: 6px;
             cursor: pointer;
-            letter-spacing: 0.5px;
         }
 
         /* Modal Pop-up Box Profil */
@@ -306,8 +324,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(11, 19, 37, 0.9);
+            background: rgba(11, 19, 37, 0.92);
             backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
             z-index: 100;
             display: none;
             justify-content: center;
@@ -339,20 +358,20 @@
         }
 
         .avatar-large {
-            font-size: 45px;
+            font-size: 32px;
             background: #d4a359;
-            width: 75px;
-            height: 75px;
+            width: 64px;
+            height: 64px;
             display: inline-flex;
             justify-content: center;
             align-items: center;
             border-radius: 50%;
-            border: 3px solid #fff;
+            border: 2px solid #fff;
             margin-bottom: 12px;
         }
 
-        .profile-card h3 { color: #fff; font-size: 18px; margin-bottom: 4px; }
-        .profile-card p.class-tag { color: #e5b842; font-size: 12px; font-weight: bold; margin-bottom: 20px; }
+        .profile-card h3 { color: #fff; font-size: 16px; margin-bottom: 4px; }
+        .profile-card p.class-tag { color: #e5b842; font-size: 11px; font-weight: bold; margin-bottom: 20px; }
 
         .stats-container {
             display: grid;
@@ -367,29 +386,29 @@
             border-radius: 10px;
             padding: 10px;
         }
-        .stat-val { color: #e5b842; font-size: 16px; font-weight: bold; }
-        .stat-lbl { color: rgba(241, 250, 238, 0.6); font-size: 10px; margin-top: 2px; }
+        .stat-val { color: #e5b842; font-size: 15px; font-weight: bold; }
+        .stat-lbl { color: rgba(241, 250, 238, 0.6); font-size: 9px; margin-top: 2px; }
 
         .btn-logout {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             background: linear-gradient(135deg, #e63946 0%, #b71c1c 100%);
-            border: none;
+            border: 1px solid #e5b842;
             border-radius: 8px;
             color: #fff;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: bold;
             cursor: pointer;
-            letter-spacing: 0.5px;
             text-transform: uppercase;
-            border: 1px solid #e5b842;
         }
-
-        .btn-logout:active { transform: scale(0.98); }
 
         /* Animasi */
         @keyframes fadeInPage { from { opacity: 0; } to { opacity: 1; } }
         @keyframes modalPop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes floatCharacter {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
         .fade-out-active { transition: opacity 0.4s ease-in-out; opacity: 0 !important; }
     </style>
 </head>
@@ -398,9 +417,10 @@
     <div class="mobile-container" id="menuPage">
         <div class="decor-border-top"></div>
 
+        <!-- Top Profile Dashboard -->
         <div class="top-profile-bar" onclick="openProfileModal()">
             <div class="student-info">
-                <div class="avatar-mini">👦🏻</div>
+                <div class="avatar-mini" id="miniAvatar">👦🏻</div>
                 <div class="meta-text">
                     <h4 id="lblNama">Memuat...</h4>
                     <p id="lblKelas">Kelas --</p>
@@ -411,6 +431,7 @@
             </div>
         </div>
 
+        <!-- Widget Status Lentera -->
         <div class="lantern-status-widget">
             <div class="lantern-item" id="lantern-parahyangan">
                 <div class="lantern-icon">🏮</div>
@@ -426,96 +447,111 @@
             </div>
         </div>
 
+        <!-- Jalur Petualangan Utama (Formasi Jalur Zig-Zag) -->
         <div class="map-zone">
             
-            <div class="thk-cluster">
+            <!-- SEKSI 1: Parahyangan -->
+            <div class="cluster-header">
                 <span class="cluster-title bg-parahyangan">🛕 Parahyangan</span>
-                <div class="level-grid">
-                    <div class="level-node" id="node-1" onclick="launchLevel(1)">
-                        <div class="level-left-info">
-                            <div class="level-number">1</div>
-                            <div class="level-details">
-                                <h5>Sarana Upacara</h5>
-                                <p>Mengenal kosakata sesajen Bali</p>
-                            </div>
-                        </div>
+            </div>
+            <div class="level-zigzag-road">
+                <!-- Level 1 (Kiri) -->
+                <div class="level-node pos-left" id="node-1" onclick="launchLevel(1)">
+                    <div class="level-node-top">
+                        <div class="level-number">1</div>
                         <div class="level-status-icon" id="status-1">🏮</div>
                     </div>
-                    <div class="level-node" id="node-2" onclick="launchLevel(2)">
-                        <div class="level-left-info">
-                            <div class="level-number">2</div>
-                            <div class="level-details">
-                                <h5>Istilah Spiritual</h5>
-                                <p>Kosakata pura & aktivitas doa</p>
-                            </div>
-                        </div>
+                    <div class="level-details">
+                        <h5>Sarana Upacara</h5>
+                        <p>Sesajen Bali</p>
+                    </div>
+                </div>
+                <!-- Level 2 (Kanan) -->
+                <div class="level-node pos-right" id="node-2" onclick="launchLevel(2)">
+                    <div class="level-node-top">
+                        <div class="level-number">2</div>
                         <div class="level-status-icon" id="status-2">🏮</div>
                     </div>
+                    <div class="level-details">
+                        <h5>Istilah Spiritual</h5>
+                        <p>Pura & Doa</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="thk-cluster">
+            <!-- SEKSI 2: Pawongan -->
+            <div class="cluster-header">
                 <span class="cluster-title bg-pawongan">👥 Pawongan</span>
-                <div class="level-grid">
-                    <div class="level-node locked" id="node-3" onclick="launchLevel(3)">
-                        <div class="level-left-info">
-                            <div class="level-number">3</div>
-                            <div class="level-details">
-                                <h5>Etika Basa Alus</h5>
-                                <p>Sopan santun bahasa daerah</p>
-                            </div>
-                        </div>
+            </div>
+            <div class="level-zigzag-road">
+                <!-- Level 3 (Kiri) -->
+                <div class="level-node locked pos-left" id="node-3" onclick="launchLevel(3)">
+                    <div class="level-node-top">
+                        <div class="level-number">3</div>
                         <div class="level-status-icon" id="status-3">🔒</div>
                     </div>
-                    <div class="level-node locked" id="node-4" onclick="launchLevel(4)">
-                        <div class="level-left-info">
-                            <div class="level-number">4</div>
-                            <div class="level-details">
-                                <h5>Percakapan Sosial</h5>
-                                <p>Interaksi gotong royong warga</p>
-                            </div>
-                        </div>
+                    <div class="level-details">
+                        <h5>Etika Basa Alus</h5>
+                        <p>Sopan Santun</p>
+                    </div>
+                </div>
+                <!-- Level 4 (Kanan) -->
+                <div class="level-node locked pos-right" id="node-4" onclick="launchLevel(4)">
+                    <div class="level-node-top">
+                        <div class="level-number">4</div>
                         <div class="level-status-icon" id="status-4">🔒</div>
                     </div>
+                    <div class="level-details">
+                        <h5>Percakapan Sosial</h5>
+                        <p>Gotong Royong</p>
+                    </div>
                 </div>
             </div>
 
-            <div class="thk-cluster">
+            <!-- SEKSI 3: Palemahan -->
+            <div class="cluster-header">
                 <span class="cluster-title bg-palemahan">🍃 Palemahan</span>
-                <div class="level-grid">
-                    <div class="level-node locked" id="node-5" onclick="launchLevel(5)">
-                        <div class="level-left-info">
-                            <div class="level-number">5</div>
-                            <div class="level-details">
-                                <h5>Sistem Subak</h5>
-                                <p>Kosakata pertanian air Bali</p>
-                            </div>
-                        </div>
+            </div>
+            <div class="level-zigzag-road">
+                <!-- Level 5 (Kiri) -->
+                <div class="level-node locked pos-left" id="node-5" onclick="launchLevel(5)">
+                    <div class="level-node-top">
+                        <div class="level-number">5</div>
                         <div class="level-status-icon" id="status-5">🔒</div>
                     </div>
-                    <div class="level-node locked" id="node-6" onclick="launchLevel(6)">
-                        <div class="level-left-info">
-                            <div class="level-number">6</div>
-                            <div class="level-details">
-                                <h5>Pelestarian Alam</h5>
-                                <p>Kosakata pelestarian lingkungan</p>
-                            </div>
-                        </div>
+                    <div class="level-details">
+                        <h5>Sistem Subak</h5>
+                        <p>Pertanian Air</p>
+                    </div>
+                </div>
+                <!-- Level 6 (Kanan) -->
+                <div class="level-node locked pos-right" id="node-6" onclick="launchLevel(6)">
+                    <div class="level-node-top">
+                        <div class="level-number">6</div>
                         <div class="level-status-icon" id="status-6">🔒</div>
+                    </div>
+                    <div class="level-details">
+                        <h5>Pelestarian Alam</h5>
+                        <p>Lingkungan</p>
                     </div>
                 </div>
             </div>
 
         </div>
 
+        <!-- Maskot Karakter Full Body Berdiri Bebas di Belakang Grid Kanan -->
+        <img id="fullBodyChar" src="" alt="Karakter Game" class="full-body-character" onerror="this.style.display='none';">
+
+        <!-- Footer Action -->
         <div class="bottom-action-bar">
-            <button class="btn-reset" onclick="resetGameProgress()">Reset Progress Belajar</button>
+            <button class="btn-reset" onclick="resetGameProgress()">Reset Progress</button>
         </div>
 
+        <!-- Modal Profil -->
         <div class="profile-modal-overlay" id="profileModal">
             <div class="profile-card">
                 <button class="btn-close-modal" onclick="closeProfileModal()">×</button>
-                <div class="avatar-large">👦🏻</div>
+                <div class="avatar-large" id="largeAvatar">👦🏻</div>
                 <h3 id="mdlNama">Siswa</h3>
                 <p class="class-tag" id="mdlKelas">Kelas --</p>
                 
@@ -542,21 +578,33 @@
             const currentProgress = parseInt(localStorage.getItem("progress_level") || "1");
             const pretestScore = parseInt(localStorage.getItem("pretest_score") || "0");
 
-            // Render komponen lobi atas
             document.getElementById("lblNama").innerText = nama;
             document.getElementById("lblKelas").innerText = `Kelas ${kelas}`;
             
             const bintangEst = Math.floor(pretestScore / 30);
             document.getElementById("lblTotalBintang").innerText = bintangEst;
 
-            // Logika Evaluasi Aktivasi 3 Lentera Utama
+            const fullBodyChar = document.getElementById("fullBodyChar");
+            const miniAvatar = document.getElementById("miniAvatar");
+            const largeAvatar = document.getElementById("largeAvatar");
+
+            // Validasi Maskot Berdasarkan Kelas
+            if (kelas === "IV A") {
+                fullBodyChar.src = "karakterputu.png";
+                miniAvatar.innerText = "👦🏻";
+                largeAvatar.innerText = "👦🏻";
+            } else {
+                fullBodyChar.src = "karakterniluh.png";
+                miniAvatar.innerText = "👧🏻";
+                largeAvatar.innerText = "👧🏻";
+            }
+
             if (currentProgress > 2) document.getElementById("lantern-parahyangan").classList.add("active");
             if (currentProgress > 4) document.getElementById("lantern-pawongan").classList.add("active");
             if (currentProgress > 6 || localStorage.getItem("game_completed_status") === "true") {
                 document.getElementById("lantern-palemahan").classList.add("active");
             }
 
-            // Render peta level linear
             for (let i = 1; i <= 6; i++) {
                 const node = document.getElementById(`node-${i}`);
                 const statusIcon = document.getElementById(`status-${i}`);
@@ -576,20 +624,14 @@
                 }
             }
 
-            // Menyimpan data siap pakai ke elemen modal
             document.getElementById("mdlNama").innerText = nama;
             document.getElementById("mdlKelas").innerText = `Kelas ${kelas}`;
             document.getElementById("mdlPreScore").innerText = pretestScore;
             document.getElementById("mdlLevelProgress").innerText = `${currentProgress} / 6`;
         });
 
-        function openProfileModal() {
-            document.getElementById("profileModal").style.display = "flex";
-        }
-
-        function closeProfileModal() {
-            document.getElementById("profileModal").style.display = "none";
-        }
+        function openProfileModal() { document.getElementById("profileModal").style.display = "flex"; }
+        function closeProfileModal() { document.getElementById("profileModal").style.display = "none"; }
 
         function launchLevel(levelNumber) {
             const currentProgress = parseInt(localStorage.getItem("progress_level") || "1");
@@ -598,11 +640,10 @@
                 return;
             }
             
-            // Pindah halaman kuis dinamis berdasarkan level yang dipilih
             const menuPage = document.getElementById("menuPage");
             menuPage.classList.add("fade-out-active");
             setTimeout(() => {
-                window.location.href = `story-level.html?level=${levelNumber}`;
+                window.location.href = `game-quiz.html?level=${levelNumber}`;
             }, 400);
         }
 
@@ -617,7 +658,7 @@
         function triggerLogOut() {
             if (confirm("Keluar dari aplikasi akan menghapus sesi saat ini?")) {
                 localStorage.clear();
-                window.location.href = "index.html"; // Kembali ke splash screen
+                window.location.href = "index.html";
             }
         }
     </script>
