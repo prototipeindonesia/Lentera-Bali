@@ -24,13 +24,14 @@
             overflow: hidden;
         }
 
-        /* Tampilan Mobile 9:16 */
-        .mobile-container {
+        /* Tampilan Responsif: Full Screen di Mobile & Tablet */
+        .instruction-container {
             width: 100%;
-            max-width: 412px;
             height: 100vh;
-            max-height: 892px;
-            background: linear-gradient(180deg, #0d1b2a 0%, #1b263b 60%, #111a2e 100%);
+            /* Menggunakan bgawal.jpg dengan overlay gradient malam gelap */
+            background: linear-gradient(180deg, rgba(11, 19, 37, 0.55) 0%, rgba(11, 19, 37, 0.85) 100%), 
+                        url('bgawal.jpg') no-repeat center center;
+            background-size: cover;
             position: relative;
             overflow: hidden;
             display: flex;
@@ -38,10 +39,18 @@
             justify-content: space-between;
             align-items: center;
             padding: 40px 24px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            border-radius: 12px;
             opacity: 0;
             animation: fadeInPage 0.5s ease-out forwards;
+        }
+
+        /* Pembatas Layar Desktop (Tablet & Mobile tetap Full Screen) */
+        @media (min-width: 1025px) {
+            .instruction-container {
+                max-width: 450px;
+                max-height: 920px;
+                border-radius: 20px;
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+            }
         }
 
         /* Ornamen Bingkai Tradisional Atas */
@@ -52,13 +61,28 @@
             width: 100%;
             height: 12px;
             background: linear-gradient(90deg, #e63946, #d4a359, #e63946);
+            z-index: 2;
         }
 
         /* Header Informasi */
         .header-section {
             text-align: center;
-            margin-top: 15px;
+            margin-top: 10px;
             width: 100%;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Ukuran Mini Logo Diperbesar menjadi 150px x 150px + Animasi */
+        .mini-logo {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 12px rgba(212, 163, 89, 0.6));
+            animation: float-logo 3s ease-in-out infinite;
         }
 
         .header-section h3 {
@@ -66,7 +90,8 @@
             font-size: 18px;
             text-transform: uppercase;
             letter-spacing: 2px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.7);
+            margin-top: -5px;
         }
 
         /* Bagian Karakter & Balon Dialog (Pusat Layar) */
@@ -76,7 +101,8 @@
             flex-direction: column;
             align-items: center;
             margin: auto 0;
-            gap: 20px;
+            gap: 15px;
+            z-index: 2;
         }
 
         /* Balon Teks Komik/Game */
@@ -85,10 +111,10 @@
             background: #ffffff;
             border: 3px solid #d4a359;
             border-radius: 16px;
-            padding: 20px;
+            padding: 16px 20px;
             position: relative;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-            min-height: 120px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            min-height: 100px;
         }
 
         /* Segitiga Petunjuk Balon Dialog di Bawah */
@@ -120,32 +146,31 @@
 
         .dialog-text {
             color: #1b263b;
-            font-size: 15px;
+            font-size: 14px;
             line-height: 1.5;
             font-weight: 500;
             text-align: center;
         }
 
-        /* Avatar Maskot Karakter (Menggunakan CSS Art Elemen) */
+        /* Avatar Maskot Karakter Menggunakan Gambar Real */
         .character-avatar {
             width: 110px;
             height: 110px;
-            background-color: #e5b842; /* Ikat Kepala / Udeng Emas */
-            border: 3px solid #f1faee;
+            border: 3.5px solid #f1faee;
             border-radius: 50%;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            position: relative;
-            animation: floatChar 3s ease-in-out infinite;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.5);
+            background-color: #111a2e;
+            animation: floatChar 3.5s ease-in-out infinite;
         }
 
-        /* Emoji representasi anak laki-laki Bali berbaju adat */
-        .character-avatar::before {
-            content: "👦🏻"; 
-            font-size: 65px;
-            margin-top: -5px;
+        .character-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         /* Label Nama Karakter di bawah Avatar */
@@ -154,22 +179,29 @@
             color: white;
             font-size: 12px;
             font-weight: bold;
-            padding: 4px 14px;
+            padding: 5px 16px;
             border-radius: 20px;
             border: 1.5px solid #d4a359;
             margin-top: -10px;
             letter-spacing: 1px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            z-index: 3;
+            text-transform: uppercase;
         }
 
         /* Box Aturan Pengisian Kuis */
         .rules-card {
             width: 100%;
-            background: rgba(13, 27, 42, 0.6);
-            border: 1px dashed rgba(212, 163, 89, 0.4);
+            max-width: 360px;
+            background: rgba(11, 19, 37, 0.8);
+            border: 1px dashed rgba(212, 163, 89, 0.5);
             border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 25px;
+            padding: 16px;
+            margin-bottom: 15px;
+            z-index: 2;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .rules-card ul {
@@ -182,8 +214,9 @@
             margin-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            opacity: 0.9;
+            gap: 10px;
+            opacity: 0.95;
+            line-height: 1.4;
         }
 
         .rules-card li:last-child {
@@ -193,8 +226,9 @@
         /* Tombol Navigasi Lanjut */
         .btn-action {
             width: 100%;
+            max-width: 360px;
             padding: 15px;
-            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%); /* Hijau Sukses */
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
             border: 2px solid #d4a359;
             border-radius: 10px;
             color: white;
@@ -203,18 +237,24 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             cursor: pointer;
-            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
-            transition: transform 0.1s ease;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+            transition: transform 0.1s ease, box-shadow 0.3s ease;
+            z-index: 2;
         }
 
         .btn-action:active {
             transform: scale(0.98);
         }
 
-        /* Animasi Keyframes */
+        /* Kumpulan Animasi Keyframes */
         @keyframes fadeInPage {
             from { opacity: 0; }
             to { opacity: 1; }
+        }
+
+        @keyframes float-logo {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
         }
 
         @keyframes floatChar {
@@ -230,10 +270,11 @@
 </head>
 <body>
 
-    <div class="mobile-container" id="instructionPage">
+    <div class="instruction-container" id="instructionPage">
         <div class="decor-border-top"></div>
 
         <div class="header-section">
+            <img src="logogame.png" alt="Logo Game" class="mini-logo" onerror="this.style.display='none';">
             <h3 id="welcomeTitle">Tahap Evaluasi</h3>
         </div>
 
@@ -242,8 +283,10 @@
                 <p class="dialog-text" id="typedText"></p>
             </div>
             
-            <div class="character-avatar"></div>
-            <div class="character-name">AGUS</div>
+            <div class="character-avatar">
+                <img id="charImage" src="" alt="Karakter Game">
+            </div>
+            <div class="character-name" id="charLabel">Karakter</div>
         </div>
 
         <div class="rules-card">
@@ -258,14 +301,31 @@
     </div>
 
     <script>
-        // Mengambil data nama siswa dari LocalStorage untuk personalisasi sapaan game
         const namaSiswa = localStorage.getItem("siswa_nama") || "Teman Petualang";
+        const kelasSiswa = localStorage.getItem("siswa_kelas") || "";
         
-        // Pesan teks yang akan diketik otomatis oleh sistem script
-        const fullMessage = `Halo, ${namaSiswa}! Sebelum kita menyalakan Lentera Harmoni Pulau Bali, yuk ikuti uji kemampuan awal (Pre-Test) ini terlebih dahulu.`;
+        const charImage = document.getElementById("charImage");
+        const charLabel = document.getElementById("charLabel");
+
+        // Deteksi Karakter berdasarkan kelas input siswa
+        if (kelasSiswa === "IV A") {
+            charImage.src = "iputudharma.jpg";
+            charLabel.innerText = "I Putu Dharma";
+        } else {
+            charImage.src = "niluhayu.jpg";
+            charLabel.innerText = "Ni Luh Ayu";
+        }
+
+        charImage.onerror = function() {
+            this.style.display = 'none';
+            this.parentElement.style.background = '#e5b842';
+            this.parentElement.innerHTML = "<span style='font-size:55px; margin-top:-5px;'>👦🏻</span>";
+        };
+        
+        const fullMessage = `Halo, ${namaSiswa}! Saya ${charLabel.innerText}. Sebelum kita menyalakan Lentera Harmoni Pulau Bali, yuk ikuti uji kemampuan awal (Pre-Test) ini terlebih dahulu.`;
         
         let index = 0;
-        const speed = 40; // Kecepatan efek ketikan dalam milidetik
+        const speed = 40; 
 
         function typeWriter() {
             if (index < fullMessage.length) {
@@ -275,7 +335,6 @@
             }
         }
 
-        // Memulai efek animasi ketikan saat halaman selesai dimuat sempurna
         document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("welcomeTitle").innerText = "Pre-Test Awal";
             typeWriter();
@@ -285,7 +344,6 @@
             const page = document.getElementById("instructionPage");
             page.classList.add("fade-out-active");
 
-            // Mengarahkan siswa langsung menuju halaman antarmuka lembar kuis pretest
             setTimeout(() => {
                 window.location.href = "quiz-pretest.html";
             }, 400);
