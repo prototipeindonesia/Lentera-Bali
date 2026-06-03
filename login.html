@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lentera Bali - Masuk Game</title>
     <style>
-        /* Reset Dasar & Layout Mobile Frame */
+        /* Reset Dasar & Layout */
         * {
             margin: 0;
             padding: 0;
@@ -24,15 +24,13 @@
             overflow: hidden;
         }
 
-        /* Tampilan Mobile 9:16 + Integrasi Background Baru */
-        .mobile-container {
+        /* Tampilan Responsif: Full Screen di Mobile & Tablet */
+        .login-container {
             width: 100%;
-            max-width: 412px;
             height: 100vh;
-            max-height: 892px;
-            /* Memasang background-splash.png dengan fallback linear gradient */
-            background: linear-gradient(180deg, rgba(13, 27, 42, 0.4) 0%, rgba(11, 19, 37, 0.75) 100%), 
-                        url('Background-splash.png') no-repeat center center;
+            /* Menggunakan bgawal.jpg dengan overlay gradient malam gelap */
+            background: linear-gradient(180deg, rgba(11, 19, 37, 0.5) 0%, rgba(11, 19, 37, 0.85) 100%), 
+                        url('bgawal.jpg') no-repeat center center;
             background-size: cover;
             position: relative;
             overflow: hidden;
@@ -41,13 +39,21 @@
             justify-content: space-between;
             align-items: center;
             padding: 40px 24px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            border-radius: 12px;
             opacity: 0;
             animation: fadeInPage 0.6s ease-out forwards;
         }
 
-        /* Ornamen Bingkai Tradisional (Top & Bottom) */
+        /* Pembatas Layar Desktop (Tablet & Mobile tetap Full Screen) */
+        @media (min-width: 1025px) {
+            .login-container {
+                max-width: 450px;
+                max-height: 920px;
+                border-radius: 20px;
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+            }
+        }
+
+        /* Ornamen Bingkai Tradisional Atas */
         .decor-border-top {
             position: absolute;
             top: 0;
@@ -58,25 +64,40 @@
             z-index: 2;
         }
 
-        /* Bagian Atas / Header Kartu dengan Backplate Blur */
+        /* Bagian Atas / Header Kartu */
         .header-section {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 15px;
             width: 100%;
             z-index: 2;
-            background: rgba(11, 19, 37, 0.6);
-            padding: 12px 16px;
-            border-radius: 14px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(4px);
+            background: rgba(11, 19, 37, 0.65);
+            padding: 16px;
+            border-radius: 16px;
+            border: 1px solid rgba(212, 163, 89, 0.25);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
         }
 
-        .mini-lantern {
-            font-size: 32px;
-            animation: swing 3s ease-in-out infinite;
-            transform-origin: top center;
-            display: inline-block;
-            margin-bottom: 6px;
+        /* Wadah Integrasi Gambar logogame.png */
+        .logo-wrapper {
+            position: relative;
+            width: 75px;
+            height: 75px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: float-mini 3s ease-in-out infinite;
+        }
+
+        .game-logo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 8px rgba(212, 163, 89, 0.5));
         }
 
         .header-section h2 {
@@ -85,24 +106,26 @@
             text-transform: uppercase;
             letter-spacing: 1.5px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            margin-top: 4px;
         }
 
         .header-section p {
             color: #f1faee;
             font-size: 12px;
             opacity: 0.9;
-            margin-top: 4px;
             font-weight: 500;
         }
 
-        /* Form Card Center (Ditingkatkan kegelapan & blur demi kontras teks emas) */
+        /* Form Card Center */
         .form-container {
             width: 100%;
-            background: rgba(13, 27, 42, 0.75);
+            max-width: 360px;
+            background: rgba(13, 27, 42, 0.8);
             border: 2px solid rgba(212, 163, 89, 0.4);
             border-radius: 16px;
             padding: 24px;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
             margin: auto 0;
             z-index: 2;
@@ -135,7 +158,7 @@
             outline: none;
             transition: all 0.3s ease;
             -webkit-user-select: text;
-            user-select: text; /* Izinkan keyboard input mengetik */
+            user-select: text;
         }
 
         .input-group input:focus, .input-group select:focus {
@@ -144,7 +167,6 @@
             background: #0d1b2a;
         }
 
-        /* Kustomisasi drop-down select option */
         .input-group select option {
             background-color: #111a2e;
             color: white;
@@ -185,29 +207,32 @@
 
         /* Bagian Footer */
         .footer-text {
-            color: rgba(251, 252, 250, 0.7);
+            color: rgba(251, 252, 250, 0.75);
             font-weight: 500;
             font-size: 11px;
             text-align: center;
             width: 100%;
+            max-width: 360px;
             z-index: 2;
-            background: rgba(11, 19, 37, 0.6);
-            padding: 8px;
-            border-radius: 10px;
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(11, 19, 37, 0.7);
+            padding: 10px;
+            border-radius: 12px;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
-        /* Animasi */
+        /* Kumpulan Animasi */
         @keyframes fadeInPage {
             from { opacity: 0; transform: scale(1.02); }
             to { opacity: 1; transform: scale(1); }
         }
 
-        @keyframes swing {
-            0% { transform: rotate(-5deg); }
-            50% { transform: rotate(5deg); }
-            100% { transform: rotate(-5deg); }
+        @keyframes float-mini {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+            100% { transform: translateY(0px); }
         }
 
         /* Transisi Keluar */
@@ -220,11 +245,14 @@
 </head>
 <body>
 
-    <div class="mobile-container" id="loginPage">
+    <div class="login-container" id="loginPage">
         <div class="decor-border-top"></div>
 
         <div class="header-section">
-            <div class="mini-lantern">🏮</div>
+            <div class="logo-wrapper">
+                <img src="logogame.png" alt="Logo Game" class="game-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+                <span style="display:none; font-size:32px;">🏮</span>
+            </div>
             <h2>Registrasi Siswa</h2>
             <p>Isi data diri untuk memulai penjelajahan</p>
         </div>
@@ -260,6 +288,26 @@
     </div>
 
     <script>
+        // Inisialisasi Backsound
+        const bgm = new Audio('backsound.mp3');
+        bgm.loop = true;
+        bgm.volume = 0.6; // Atur kenyamanan intensitas volume musik latar
+
+        function playBGM() {
+            bgm.play().then(() => {
+                // Lepaskan pendengar event agar tidak menumpuk panggilan fungsi saat interaksi lanjutan
+                document.removeEventListener('click', playBGM);
+                document.removeEventListener('touchstart', playBGM);
+            }).catch(err => {
+                console.log("Audio otomatis diblokir, menunggu interaksi pengguna pada form.");
+            });
+        }
+
+        // Jalankan pelacakan interaksi aman sesegera mungkin
+        playBGM();
+        document.addEventListener('click', playBGM);
+        document.addEventListener('touchstart', playBGM);
+
         function handleLogin(event) {
             event.preventDefault();
 
@@ -296,6 +344,16 @@
 
                 // Animasi transisi keluar halaman
                 loginPage.classList.add("fade-out-active");
+
+                // Efek Audio Fade Out (mengecilkan volume audio bertahap) sebelum berpindah halaman
+                let fadeInterval = setInterval(() => {
+                    if (bgm.volume > 0.05) {
+                        bgm.volume -= 0.05;
+                    } else {
+                        clearInterval(fadeInterval);
+                        bgm.pause();
+                    }
+                }, 40);
 
                 // Berpindah ke instruksi pre-test setelah animasi rampung
                 setTimeout(() => {
