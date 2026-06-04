@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lentera Bali - Kuis Permainan</title>
+    <style>
+        /* Reset Dasar & Layout Mobile Frame */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            background-color: #0b1325;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .mobile-container {
+            width: 100%;
+            height: 100vh;
+            background: #0d1b2a;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            animation: fadeInPage 0.4s ease-out forwards;
+        }
+
+        @media (min-width: 1025px) {
+            .mobile-container {
+                max-width: 412px;
+                max-height: 892px;
+                border-radius: 20px;
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            }
+        }
+
+        /* Ornamen Bingkai Atas */
+        .decor-border-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 12px;
+            background: linear-gradient(90deg, #e63946, #d4a359, #e63946);
+            z-index: 10;
+        }
+
+        /* Top Header Status Bar */
+        .quiz-header {
+            width: 100%;
+            padding: 24px 20px 12px 20px;
+            background: #111a2e;
+            border-bottom: 2px solid rgba(212, 163, 89, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 5;
+        }
+
+        .quiz-category {
+            color: #e5b842;
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Tampilan 5 Nyawa */
+        .lives-container {
+            display: flex;
+            gap: 3px;
+            color: #e63946;
+            font-size: 16px;
+            text-shadow: 0 0 5px rgba(230, 57, 70, 0.4);
+        }
+
+        .quiz-progress {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        /* Progress Bar Line */
+        .progress-bar-container {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #d4a359, #4caf50);
+            transition: width 0.3s ease;
+        }
+
+        /* Main Content Area */
+        .quiz-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Kotak Soal */
+        .question-card {
+            background: rgba(27, 38, 59, 0.7);
+            border: 1.5px solid rgba(212, 163, 89, 0.25);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .question-text {
+            color: #f1faee;
+            font-size: 16px;
+            line-height: 1.5;
+            font-weight: 500;
+        }
+
+        /* Pilihan Jawaban */
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            width: 100%;
+            padding: 14px 16px;
+            background: rgba(11, 19, 37, 0.8);
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 14.5px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        .option-btn:active {
+            transform: scale(0.99);
+        }
+
+        /* Status Interaktif Jawaban */
+        .option-btn.correct {
+            background: rgba(76, 175, 80, 0.2) !important;
+            border-color: #4caf50 !important;
+            color: #4caf50 !important;
+            font-weight: bold;
+        }
+
+        .option-btn.wrong {
+            background: rgba(230, 57, 70, 0.2) !important;
+            border-color: #e63946 !important;
+            color: #e63946 !important;
+        }
+
+        /* Gaya Khusus Level Mencocokkan Gambar */
+        .match-instruction {
+            color: #d4a359;
+            font-size: 13px;
+            text-align: center;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        .match-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .match-image-box {
+            width: 100%;
+            height: 180px;
+            background: #1b263b;
+            border: 2px solid #d4a359;
+            border-radius: 14px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        .match-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .match-placeholder {
+            font-size: 64px;
+        }
+
+        .match-options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .match-btn {
+            padding: 12px;
+            background: rgba(17, 26, 46, 0.9);
+            border: 1.5px solid rgba(212, 163, 89, 0.4);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        /* Tampilan Layar Hasil Skor Akhir / Game Over */
+        .result-container {
+            text-align: center;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 24px;
+        }
+
+        .result-icon {
+            font-size: 70px;
+            margin-bottom: 16px;
+            animation: bounce 1s infinite alternate;
+        }
+
+        .result-title {
+            color: #e5b842;
+            font-size: 24px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .result-score {
+            font-size: 48px;
+            color: #fff;
+            font-weight: bold;
+            margin: 15px 0;
+            text-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+
+        .btn-finish {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(76,175,80,0.4);
+        }
+
+        /* Animasi */
+        @keyframes fadeInPage { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+        .fade-out { opacity: 0; transition: opacity 0.4s ease; }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container" id="quizPage">
+        <div class="decor-border-top"></div>
+
+        <div class="quiz-header" id="headerZone">
+            <span class="quiz-category" id="lblCategory">Memuat Kuis...</span>
+            <div class="header-right">
+                <div class="lives-container" id="livesBox">❤️❤️❤️❤️❤️</div>
+                <span class="quiz-progress" id="lblProgress">0/0</span>
+            </div>
+        </div>
+        <div class="progress-bar-container" id="progressBarZone">
+            <div class="progress-bar-fill" id="barFill"></div>
+        </div>
+
+        <div class="quiz-body" id="bodyZone">
+            </div>
+
+        <div class="result-container" id="resultZone">
+            <div class="result-icon" id="lblResultIcon">🎉</div>
+            <h2 class="result-title" id="lblResultTitle">Misi Selesai!</h2>
+            <p style="color: #f1faee; opacity: 0.8; font-size: 14px;" id="lblScorePrefix">Nilai pencapaian kuis kamu:</p>
+            <div class="result-score" id="lblFinalScore">100</div>
+            <p style="color: #d4a359; font-size: 12px; font-weight: 500;" id="lblResultDesc">Luar biasa! Kamu berhasil menguasai materi ini.</p>
+            <button class="btn-finish" id="btnFinishAction" onclick="finishAndRedirect()">Buka Kamera AR 📷</button>
+        </div>
+    </div>
+
+    <script>
+        // Database 5 Soal per Level terbagi presisi agar tidak null / undefined
+        const quizDatabase = {
+            1: {
+                category: "Parahyangan (Level 1)",
+                type: "PG",
+                questions: [
+                    { q: "Wewidangan utawi genah suci anggen umat Hindu maturan kawastanin...", a: ["Pura", "Bale banjar", "Sekolah", "Pasar"], correct: 0 },
+                    { q: "Tuhan ring agama Hindu kawastanin...", a: ["Sang Hyang Widhi Wasa", "Ratu Gede", "Jero Gede", "Mpu"], correct: 0 },
+                    { q: "Umat Hindu nunas ica ring Sang Hyang Widhi antuk ngaturang...", a: ["Sesajen miwah banten", "Pipis miwah perhiasan", "Batik miwah anduk", "Sepatu miwah tas"], correct: 0 },
+                    { q: "Manusia patut bakti miwah suksma ring Ida Sang Hyang Widhi Wasa santukan...", a: ["Ida sane ngasilang keneh", "Ida sane ngaturang banten", "Ida sane nyiptayang jagat miwah manusa", "Ida sane mekarya pura"], correct: 2 },
+                    { q: "Rerahinan Saraswati, umat Hindu ngaturang banten ring...", a: ["Lontar miwah buku", "Beras miwah taluh", "Ayam miwah bebek", "Candi miwah arca"], correct: 0 }
+                ]
+            },
+            2: {
+                category: "Parahyangan (Level 2)",
+                type: "PG",
+                questions: [
+                    { q: "Upacara penyucian ke segara sane kalaksanayang olih umat Hindu sedurung Nyepi kawastanin...", a: ["Melasti", "Mepandes", "Mabyakala", "Matur piuning"], correct: 0 },
+                    { q: "Sarana upacara sane malakar don nyuh medaging bunga, kaanggen ngaturang banten ring sang hyang widhi inggih punika...", a: ["Tamas", "Canang", "Tumpeng", "Lamak"], correct: 1 },
+                    { q: "Ngaturang banten saiban utawi ajengan nasi semengan kawastanin...", a: ["Maturan", "Melukat", "Ngejot", "Melasti"], correct: 2 },
+                    { q: "Genah palinggihan Sang Hyang Widhi Wasa ring pura inggih punika...", a: ["Padmasana", "Bale kulkul", "Wantilan", "Lumbung"], correct: 0 },
+                    { q: "Rerahinan Galungan lan Kuningan, umat Hindu mekarya sarana upacara marupa tiing sané lengkung tur kahias antuk janur miwah hasil bumi kawastanin...", a: ["Penjor", "Tamiang", "Sate", "Lawar"], correct: 0 }
+                ]
+            },
+            3: {
+                category: "Parahyangan Gambar (Level 3)",
+                type: "Match",
+                questions: [
+                    { img: "purabesakih.jpg", emoji: "🛕", correctName: "Pura Besakih", options: ["Canang", "Pura Besakih", "Penjor", "Pura Tanah Lot"] },
+                    { img: "canang.jpg", emoji: "🧺", correctName: "Canang", options: ["Mebakti", "Penjor", "Canang", "Pura Besakih"] },
+                    { img: "penjor.jpg", emoji: "🎋", correctName: "Penjor", options: ["Penjor", "Pura Tanah Lot", "Canang", "Mebakti"] },
+                    { img: "tanahlot.jpg", emoji: "🌊", correctName: "Pura Tanah Lot", options: ["Pura Besakih", "Canang", "Penjor", "Pura Tanah Lot"] },
+                    { img: "mebakti.jpg", emoji: "🙏", correctName: "Mebakti", options: ["Mebakti", "Pura Besakih", "Canang", "Penjor"] }
+                ]
+            },
+            4: {
+                category: "Pawongan (Level 4)",
+                type: "PG",
+                questions: [
+                    { q: "Ngajak nyama patutne saling tulungin. Saling tulungin nyiriang idupe....", a: ["Sugih", "Uyut", "Lacur", "Adung"], correct: 3 },
+                    { q: "Rai demen masilihang teken timpale ane sing ngelah. Ento bacakan Solah ane....", a: ["Melah", "Jele", "Mayus", "Lengit"], correct: 0 },
+                    { q: "Rerama sesuai maang pitutur. Pitutur rerama patut....", a: ["Resepang", "Kelidin", "Saruin", "Kalahin"], correct: 0 },
+                    { q: "Putu Budi ngelah cita-cita dadi dokter. Dadi dokter geginane tuah....", a: ["Nyampur ubad", "Ngubadin anak gelem", "Menahin montor", "Ngae wewangunan"], correct: 1 },
+                    { q: "Ngomong sareng guru patut nganggen basa sane....", a: ["Kasar", "Alus tur sopan", "Keras", "Sengit"], correct: 1 }
+                ]
+            },
+            5: {
+                category: "Pawongan (Level 5)",
+                type: "PG",
+                questions: [
+                    { q: "Ring waktu mebersih kelas, iraga patut....", a: ["Gotong royong", "Melaib", "Nyingakin kemawon", "Macepuk"], correct: 0 },
+                    { q: "Pianakne ane pertama suba ngajahin di SD. Anak ane geginane ngajahin di sekolah madan...", a: ["Guru", "Satpam", "Pengacara", "Polisi"], correct: 0 },
+                    { q: "Tusing dadi lengit tulungin rerama magarapan. Lengit len raosne....", a: ["Jemet", "Seleg", "Mayus", "Anteng"], correct: 2 },
+                    { q: "Yening ada timpal ane ulung patutne....", a: ["Kalahin", "Tolih", "Kedekin", "Tulungin"], correct: 3 },
+                    { q: "Tresna asih metimpal. Tresna asih solah ane....", a: ["Melah", "Corah", "Jele", "Gedeg"], correct: 0 }
+                ]
+            },
+            6: {
+                category: "Pawongan Gambar (Level 6)",
+                type: "Match",
+                questions: [
+                    { img: "gotongroyong.jpg", emoji: "🧹", correctName: "Gotong Royong", options: ["Metimpal", "Gotong Royong", "Malahib", "Ngajahin"] },
+                    { img: "metimpal.jpg", emoji: "🤝", correctName: "Metimpal", options: ["Mayus", "Ulung", "Metimpal", "Guru"] },
+                    { img: "ngajahin.jpg", emoji: "🧑‍🏫", correctName: "Ngajahin", options: ["Ngajahin", "Gotong Royong", "Melah", "Lacur"] },
+                    { img: "tulungin.jpg", emoji: "⛑️", correctName: "Tulungin", options: ["Uyut", "Tulungin", "Seleg", "Jemet"] },
+                    { img: "salingtulung.jpg", emoji: "🧑‍🤝‍🧑", correctName: "Saling Tulung", options: ["Mayus", "Kasar", "Saling Tulung", "Malahib"] }
+                ]
+            }
+        };
+
+        let currentLevel = 1;
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let lives = 5; 
+        let activeQuestions = [];
+        let isAnswered = false;
+        let gameStatus = "success"; 
+
+        // Audio Handler
+        const bgm = new Audio('backsound.mp3');
+        bgm.loop = true;
+        bgm.volume = 0.5;
+        const sfxCorrect = new Audio('correct.mp3');
+        const sfxWrong = new Audio('wrong.mp3');
+
+        function playBGM() {
+            bgm.play().catch(() => {});
+        }
+        document.addEventListener('click', playBGM);
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            currentLevel = parseInt(urlParams.get('level') || "1");
+
+            // Pastikan data level valid, jika tidak ada, default ke Level 1
+            const levelData = quizDatabase[currentLevel] || quizDatabase[1];
+            activeQuestions = levelData.questions;
+            document.getElementById("lblCategory").innerText = levelData.category;
+
+            updateLivesUI();
+            loadQuestion();
+        });
+
+        function updateLivesUI() {
+            let hearts = "";
+            for(let i = 0; i < 5; i++) {
+                hearts += (i < lives) ? "❤️" : "🖤";
+            }
+            document.getElementById("livesBox").innerHTML = hearts;
+        }
+
+        function loadQuestion() {
+            isAnswered = false;
+            const levelData = quizDatabase[currentLevel] || quizDatabase[1];
+            const currentQ = activeQuestions[currentQuestionIndex];
+            
+            // Pengaman jika pertanyaan kosong
+            if (!currentQ) {
+                showQuizResult();
+                return;
+            }
+
+            document.getElementById("lblProgress").innerText = `${currentQuestionIndex + 1} / ${activeQuestions.length}`;
+            const progressPercent = (currentQuestionIndex / activeQuestions.length) * 100;
+            document.getElementById("barFill").style.width = `${progressPercent}%`;
+
+            const bodyZone = document.getElementById("bodyZone");
+            bodyZone.innerHTML = ""; 
+
+            if (levelData.type === "PG") {
+                const card = document.createElement("div");
+                card.className = "question-card";
+                card.innerHTML = `<p class="question-text">${currentQ.q}</p>`;
+                bodyZone.appendChild(card);
+
+                const optsContainer = document.createElement("div");
+                optsContainer.className = "options-container";
+
+                currentQ.a.forEach((option, idx) => {
+                    const btn = document.createElement("button");
+                    btn.className = "option-btn";
+                    btn.innerText = `${String.fromCharCode(65 + idx)}. ${option}`;
+                    btn.onclick = () => checkAnswerPG(idx, btn);
+                    optsContainer.appendChild(btn);
+                });
+                bodyZone.appendChild(optsContainer);
+
+            } else if (levelData.type === "Match") {
+                const instruction = document.createElement("div");
+                instruction.className = "match-instruction";
+                instruction.innerText = "Cocokkan Gambar Dibawah Dengan Istilah Bali Sane Patut!";
+                bodyZone.appendChild(instruction);
+
+                const matchContainer = document.createElement("div");
+                matchContainer.className = "match-container";
+
+                const imgBox = document.createElement("div");
+                imgBox.className = "match-image-box";
+                imgBox.innerHTML = `
+                    <img src="${currentQ.img}" alt="Kuis Gambar" class="match-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <span class="match-placeholder" style="display:none;">${currentQ.emoji}</span>
+                `;
+                matchContainer.appendChild(imgBox);
+
+                const gridOptions = document.createElement("div");
+                gridOptions.className = "match-options-grid";
+
+                currentQ.options.forEach((option) => {
+                    const btn = document.createElement("button");
+                    btn.className = "match-btn";
+                    btn.innerText = option;
+                    btn.onclick = () => checkAnswerMatch(option, btn);
+                    gridOptions.appendChild(btn);
+                });
+
+                matchContainer.appendChild(gridOptions);
+                bodyZone.appendChild(matchContainer);
+            }
+        }
+
+        function handleWrongAnswer() {
+            lives--;
+            updateLivesUI();
+            
+            if (lives <= 0) {
+                gameStatus = "failed";
+                setTimeout(() => {
+                    showQuizResult();
+                }, 1000);
+                return true;
+            }
+            return false;
+        }
+
+        function checkAnswerPG(selectedIndex, selectedBtn) {
+            if (isAnswered) return;
+            isAnswered = true;
+
+            const currentQ = activeQuestions[currentQuestionIndex];
+            const allButtons = document.querySelectorAll(".option-btn");
+
+            if (selectedIndex === currentQ.correct) {
+                selectedBtn.classList.add("correct");
+                sfxCorrect.play();
+                score += 20; 
+                nextStepTransition();
+            } else {
+                selectedBtn.classList.add("wrong");
+                if(allButtons[currentQ.correct]) {
+                    allButtons[currentQ.correct].classList.add("correct");
+                }
+                sfxWrong.play();
+                
+                const isGameOver = handleWrongAnswer();
+                if (!isGameOver) nextStepTransition();
+            }
+        }
+
+        function checkAnswerMatch(selectedOption, selectedBtn) {
+            if (isAnswered) return;
+            isAnswered = true;
+
+            const currentQ = activeQuestions[currentQuestionIndex];
+            const allButtons = document.querySelectorAll(".match-btn");
+
+            if (selectedOption === currentQ.correctName) {
+                selectedBtn.style.background = "#4caf50";
+                selectedBtn.style.borderColor = "#4caf50";
+                sfxCorrect.play();
+                score += 20;
+                nextStepTransition();
+            } else {
+                selectedBtn.style.background = "#e63946";
+                selectedBtn.style.borderColor = "#e63946";
+                sfxWrong.play();
+
+                allButtons.forEach(btn => {
+                    if (btn.innerText === currentQ.correctName) {
+                        btn.style.background = "#4caf50";
+                        btn.style.borderColor = "#4caf50";
+                    }
+                });
+
+                const isGameOver = handleWrongAnswer();
+                if (!isGameOver) nextStepTransition();
+            }
+        }
+
+        function nextStepTransition() {
+            setTimeout(() => {
+                if (currentQuestionIndex < activeQuestions.length - 1) {
+                    currentQuestionIndex++;
+                    loadQuestion();
+                } else {
+                    showQuizResult();
+                }
+            }, 1500); 
+        }
+
+        function showQuizResult() {
+            document.getElementById("barFill").style.width = "100%";
+            document.getElementById("headerZone").style.display = "none";
+            document.getElementById("progressBarZone").style.display = "none";
+            document.getElementById("bodyZone").style.display = "none";
+
+            const iconZone = document.getElementById("lblResultIcon");
+            const titleZone = document.getElementById("lblResultTitle");
+            const descZone = document.getElementById("lblResultDesc");
+            const btnAction = document.getElementById("btnFinishAction");
+
+            if (gameStatus === "success") {
+                iconZone.innerText = "🎉";
+                titleZone.innerText = "Misi Selesai!";
+                document.getElementById("lblFinalScore").innerText = score;
+                descZone.innerText = score >= 80 ? "Luar biasa! Kedisiplinanmu menyalakan lentera harmoni." : "Bagus! Teruskan belajar agar pemahamanmu semakin matang.";
+                localStorage.setItem(`skor_level_${currentLevel}`, score);
+                btnAction.innerText = "Buka Kamera AR 📷";
+            } else {
+                iconZone.innerText = "💥";
+                titleZone.innerText = "Game Over!";
+                titleZone.style.color = "#e63946";
+                document.getElementById("lblScorePrefix").innerText = "Sisa nyawa kamu habis.";
+                document.getElementById("lblFinalScore").innerText = "0";
+                descZone.innerText = "Jangan menyerah, ayo coba lagi lewat AR camera!";
+                btnAction.innerText = "Coba Lagi Lewat AR 📷";
+                btnAction.style.background = "linear-gradient(135deg, #e63946 0%, #b3242e 100%)";
+            }
+
+            document.getElementById("resultZone").style.display = "flex";
+        }
+
+        function finishAndRedirect() {
+            if (gameStatus === "success") {
+                const nextLevel = currentLevel + 1;
+                if (currentLevel < 6) {
+                    localStorage.setItem("progress_level", nextLevel.toString());
+                }
+            }
+
+            document.getElementById("quizPage").classList.add("fade-out");
+
+            setTimeout(() => {
+                window.location.href = `ar-camera.html?level=${currentLevel}&status=${gameStatus}`;
+            }, 400);
+        }
+    </script>
+</body>
+</html>
