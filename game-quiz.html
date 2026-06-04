@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lentera Bali - Cerita Misi</title>
+    <style>
+        /* Reset Dasar & Layout Mobile Frame */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            background-color: #0b1325;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Tampilan Mobile 9:16 Responsif */
+        .mobile-container {
+            width: 100%;
+            height: 100vh;
+            background: #0d1b2a;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            opacity: 0;
+            animation: fadeInPage 0.4s ease-out forwards;
+            cursor: pointer;
+        }
+
+        @media (min-width: 1025px) {
+            .mobile-container {
+                max-width: 412px;
+                max-height: 892px;
+                border-radius: 20px;
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            }
+        }
+
+        /* Ornamen Garis Atas Tradisional */
+        .decor-border-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 12px;
+            background: linear-gradient(90deg, #e63946, #d4a359, #e63946);
+            z-index: 10;
+        }
+
+        /* Top Bar Info Misi */
+        .story-header {
+            width: 100%;
+            padding: 24px 20px 10px 20px;
+            background: linear-gradient(180deg, rgba(11, 19, 37, 0.9) 0%, transparent 100%);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 5;
+        }
+
+        .mission-badge {
+            background: #d4a359;
+            color: #0d1b2a;
+            font-size: 11px;
+            font-weight: bold;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid #fff;
+        }
+
+        .btn-skip {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* Area Panel Visual Komik Cerita (Tengah Atas) */
+        .comic-panel-zone {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .comic-illustration {
+            width: 100%;
+            height: 90%;
+            background: #1b263b;
+            border: 3px solid #d4a359;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Gambar Ilustrasi / Maskot Karakter Berbaju Adat */
+        .character-story-img {
+            height: 95%;
+            width: auto;
+            object-fit: contain;
+            position: absolute;
+            bottom: 0;
+            display: none;
+        }
+
+        /* Placeholder Grafis Emojikon Cerita (Hanya aktif jika gambar gagal/tidak diset) */
+        .comic-art-placeholder {
+            font-size: 80px;
+            animation: pulseArt 2s ease-in-out infinite alternate;
+            z-index: 2;
+        }
+
+        /* Sistem Dialog Visual Novel (Bawah) */
+        .dialog-system-zone {
+            width: 100%;
+            background: linear-gradient(180deg, transparent 0%, #111a2e 25%, #090f1d 100%);
+            padding: 20px 20px 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 5;
+        }
+
+        /* Label Nama Karakter Berbicara */
+        .speaker-tag {
+            background: #e63946;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 6px 16px;
+            border-radius: 8px;
+            border: 1.5px solid #d4a359;
+            align-self: flex-start;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            text-transform: uppercase;
+        }
+
+        /* Kotak Teks Narasi Dialog */
+        .speech-box {
+            width: 100%;
+            min-height: 85px;
+            background: rgba(27, 38, 59, 0.7);
+            border: 1.2px solid rgba(212, 163, 89, 0.3);
+            border-radius: 12px;
+            padding: 14px;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.4);
+        }
+
+        .speech-text {
+            color: #f1faee;
+            font-size: 13.5px;
+            line-height: 1.5;
+        }
+
+        /* Tombol Navigasi Cerita */
+        .btn-next {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #d4a359 0%, #a67c37 100%);
+            border: none;
+            border-radius: 10px;
+            color: #0d1b2a;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(212, 163, 89, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-next:active {
+            transform: scale(0.98);
+        }
+
+        /* Animasi */
+        @keyframes fadeInPage {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes pulseArt {
+            from { transform: scale(0.96); opacity: 0.85; }
+            to { transform: scale(1.03); opacity: 1; }
+        }
+
+        .fade-out-active {
+            transition: opacity 0.4s ease-in-out;
+            opacity: 0 !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container" id="storyPage">
+        <div class="decor-border-top"></div>
+
+        <div class="story-header">
+            <span class="mission-badge" id="lblMisiCategory">Misi Parahyangan</span>
+            <button class="btn-skip" onclick="skipStory()">Lewati Cerita ⏩</button>
+        </div>
+
+        <div class="comic-panel-zone">
+            <div class="comic-illustration">
+                <img id="charStoryImg" src="" alt="Karakter" class="character-story-img" onerror="this.style.display='none';">
+                <div class="comic-art-placeholder" id="lblComicArt">🛕</div>
+            </div>
+        </div>
+
+        <div class="dialog-system-zone">
+            <div class="speaker-tag" id="lblSpeakerName">PUTU</div>
+            
+            <div class="speech-box">
+                <p class="speech-text" id="lblSpeechContent">Memuat jalinan cerita...</p>
+            </div>
+
+            <button class="btn-next" onclick="nextDialog()">Lanjut ➔</button>
+        </div>
+    </div>
+
+    <script>
+        // Bank Data Cerita Pengantar Berdasarkan Level yang Aktif
+        const storyDatabase = {
+            1: {
+                category: "Misi Parahyangan (Level 1)",
+                sequence: [
+                    { speaker: "NAMA_USER", art: "🛕", text: "Om Swastyastu! Hari ini di Pura keluarga kami sedang bersiap menyambut perayaan Upacara Piodalan." },
+                    { speaker: "PARTNER_USER", art: "🧺", text: "Benar sekali! Tapi Ibu sedang sibuk dan meminta bantuan kita untuk merangkai serta mengelompokkan sarana persembahan atau sesajen." },
+                    { speaker: "NAMA_USER", art: "❓", text: "Masalahnya, beberapa wadah anyaman janur dan bunga belum dikelompokkan berdasarkan nama Basa Bali-nya yang benar. Bisakah kamu membantu kami?" }
+                ]
+            },
+            2: {
+                category: "Misi Parahyangan (Level 2)",
+                sequence: [
+                    { speaker: "NAMA_USER", art: "🙏", text: "Sarana upacara sudah rapi! Sekarang, para pemedek (warga yang bersembahyang) mulai memadati area pelataran Pura." },
+                    { speaker: "PARTNER_USER", art: "📿", text: "Mari kita bersiap mengikuti prosesi doa bersama secara tertib, khusyuk, dan penuh rasa bakti." },
+                    { speaker: "NAMA_USER", art: "❓", text: "Before persembahyangan dimulai, yuk pelajari istilah-istilah aktivitas spiritual dan struktur area suci Pura dalam Basa Bali!" }
+                ]
+            },
+            3: {
+                category: "Misi Pawongan (Level 3)",
+                sequence: [
+                    { speaker: "PARTNER_USER", art: "🏫", text: "Wah, hari ini suasana di sekolah ramai sekali. Kita kedatangan tamu guru kehormatan dari luar daerah." },
+                    { speaker: "NAMA_USER", art: "🤝", text: "Sebagai tuan rumah yang baik, kita harus menyapa dan berbicara dengan beliau menggunakan etika komunikasi yang sopan." },
+                    { speaker: "PARTNER_USER", art: "❓", text: "Yuk, latih kemampuan penggunaan Basa Alus Singgih dan Sor milikmu agar komunikasi kita tetap menjaga rasa hormat!" }
+                ]
+            },
+            4: {
+                category: "Misi Pawongan (Level 4)",
+                sequence: [
+                    { speaker: "NAMA_USER", art: "🛖", text: "Warga banjar (desa) hari ini sedang berkumpul untuk bergotong-royong memperbaiki atap balai masyarakat yang rusak." },
+                    { speaker: "PARTNER_USER", art: "🍲", text: "Para warga bergotong-royong sambil menyiapkan hidangan makanan tradisional bersama-sama secara adung (rukun)." },
+                    { speaker: "NAMA_USER", art: "❓", text: "Banyak istilah interaktif sosial dan kosakata gotong royong yang unik. Mari bantu warga desa menyelesaikan persiapan ini!" }
+                ]
+            },
+            5: {
+                category: "Misi Palemahan (Level 5)",
+                sequence: [
+                    { speaker: "NAMA_USER", art: "🌾", text: "Lihatlah hamparan sawah berundak ini, indah sekali ya! Sistem pengairan teratur di sini dikelola oleh organisasi Subak." },
+                    { speaker: "PARTNER_USER", art: "💧", text: "Betul, Subak adalah bukti nyata bagaimana masyarakat Bali menjaga hubungan harmoni yang erat dengan alam lingkungan sekitar." },
+                    { speaker: "NAMA_USER", art: "❓", text: "Mari pelajari istilah-istilah pertanian tradisional dan pembagian saluran air dalam Basa Bali di level irigasi alam ini!" }
+                ]
+            },
+            6: {
+                category: "Misi Palemahan (Level 6)",
+                sequence: [
+                    { speaker: "PARTNER_USER", art: "🌳", text: "Petualangan kita tiba di level terakhir! Kita berada di area batas hutan lindung desa yang dijaga kesuciannya oleh adat." },
+                    { speaker: "NAMA_USER", art: "🦜", text: "Lentera ketiga atau lentera terakhir kita akan menyala terang jika kita berhasil melestarikan habitat tanaman dan satwa di sini." },
+                    { speaker: "PARTNER_USER", art: "❓", text: "Ayo selesaikan misi kosakata pelestarian alam ini agar seluruh Lentera Harmoni Bali menyala sempurna!" }
+                ]
+            }
+        };
+
+        let currentActiveLevel = 1;
+        let currentDialogIndex = 0;
+        let currentStorySequence = [];
+        
+        let namaSiswa = "Putu";
+        let namaPartner = "Ni Luh";
+        let fileGambarSiswa = "karakterputu.png";
+        let fileGambarPartner = "karakterniluh.png";
+
+        // Inisialisasi Audio Backsound
+        const bgm = new Audio('backsound.mp3');
+        bgm.loop = true;
+        bgm.volume = 0.6;
+
+        function playBGM() {
+            bgm.play().then(() => {
+                document.removeEventListener('click', playBGM);
+                document.removeEventListener('touchstart', playBGM);
+            }).catch(err => {
+                console.log("Audio otomatis tertahan sistem browser, menanti ketukan layar.");
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // Putar audio secara aman
+            playBGM();
+            document.addEventListener('click', playBGM);
+            document.addEventListener('touchstart', playBGM);
+
+            // Ambil data progres dari halaman menu utama (`progress_level`)
+            currentActiveLevel = parseInt(localStorage.getItem("progress_level") || "1");
+            
+            // Ambil preferensi kelas/karakter siswa
+            const kelas = localStorage.getItem("siswa_kelas") || "IV A";
+            if (kelas !== "IV A") {
+                namaSiswa = "Ni Luh";
+                namaPartner = "Putu";
+                fileGambarSiswa = "karakterniluh.png";
+                fileGambarPartner = "karakterputu.png";
+            }
+
+            // Ambil rangkaian skenario cerita berdasarkan database level
+            const storyData = storyDatabase[currentActiveLevel] || storyDatabase[1];
+            document.getElementById("lblMisiCategory").innerText = storyData.category;
+            
+            // Parsing nama dinamis pada sekuens dialog
+            currentStorySequence = storyData.sequence.map(item => {
+                let fixedSpeaker = item.speaker;
+                let fixedImg = "";
+                
+                if (item.speaker === "NAMA_USER") {
+                    fixedSpeaker = namaSiswa;
+                    fixedImg = fileGambarSiswa;
+                } else if (item.speaker === "PARTNER_USER") {
+                    fixedSpeaker = namaPartner;
+                    fixedImg = fileGambarPartner;
+                }
+                
+                return {
+                    speaker: fixedSpeaker,
+                    image: fixedImg,
+                    art: item.art,
+                    text: item.text
+                };
+            });
+            
+            // Render dialog pertama
+            renderDialog();
+        });
+
+        function renderDialog() {
+            const currentDialog = currentStorySequence[currentDialogIndex];
+            
+            document.getElementById("lblSpeakerName").innerText = currentDialog.speaker;
+            document.getElementById("lblComicArt").innerText = currentDialog.art;
+            document.getElementById("lblSpeechContent").innerText = currentDialog.text;
+
+            // Kontrol penampilan gambar maskot pendukung cerita
+            const imgTag = document.getElementById("charStoryImg");
+            if (currentDialog.image) {
+                imgTag.src = currentDialog.image;
+                imgTag.style.display = "block";
+            } else {
+                imgTag.style.display = "none";
+            }
+
+            // Jika berada di ujung baris dialog cerita, ubah tombol menjadi tombol start kuis
+            const btn = document.querySelector(".btn-next");
+            if (currentDialogIndex === currentStorySequence.length - 1) {
+                btn.innerHTML = `Mulai Kuis Game 🎮`;
+                btn.style.background = "linear-gradient(135deg, #4caf50 0%, #2e7d32 100%)";
+                btn.style.color = "#ffffff";
+            } else {
+                btn.innerHTML = `Lanjut ➔`;
+                btn.style.background = "linear-gradient(135deg, #d4a359 0%, #a67c37 100%)";
+                btn.style.color = "#0d1b2a";
+            }
+        }
+
+        function nextDialog() {
+            if (currentDialogIndex < currentStorySequence.length - 1) {
+                currentDialogIndex++;
+                renderDialog();
+            } else {
+                skipStory(); // Menuju ke halaman inti gameplay kuis jika dialog habis
+            }
+        }
+
+        function skipStory() {
+            const page = document.getElementById("storyPage");
+            page.classList.add("fade-out-active");
+
+            // Efek suara mengecil bertahap (fade-out) agar perpindahan lagu mulus
+            let fadeInterval = setInterval(() => {
+                if (bgm.volume > 0.05) {
+                    bgm.volume -= 0.05;
+                } else {
+                    clearInterval(fadeInterval);
+                    bgm.pause();
+                }
+            }, 30);
+
+            // Dialihkan langsung menuju halaman soal-quiz.html sesuai permintaan Anda
+            setTimeout(() => {
+                window.location.href = `soal-quiz.html?level=${currentActiveLevel}`;
+            }, 400);
+        }
+    </script>
+</body>
+</html>
